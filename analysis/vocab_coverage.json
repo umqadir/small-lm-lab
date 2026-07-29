@@ -1,0 +1,46 @@
+{
+  "metadata": {
+    "timestamp": "2026-07-26T16:12:07.792492+00:00",
+    "tokenized_root": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized",
+    "vocab_size": 16384,
+    "eot_id": 0,
+    "drawable_ids": 16383,
+    "max_tokens_per_domain": 200000000,
+    "note": "counts are over a prefix of each domain's train stream, not the whole stream. tokens_counted per domain records the prefix used."
+  },
+  "per_domain": {
+    "tinystories": {
+      "path": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized/tinystories_train.bin",
+      "tokens_counted": 200000000,
+      "distinct_ids": 13279
+    },
+    "fineweb_edu": {
+      "path": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized/fineweb_edu_train.bin",
+      "tokens_counted": 167948480,
+      "distinct_ids": 16320
+    }
+  },
+  "tokens_counted_total": 367948480,
+  "distinct_ids_seen": 16331,
+  "ids_seen_at_least": {
+    "1": 16331,
+    "10": 16286,
+    "100": 16162,
+    "1000": 14855,
+    "10000": 3361
+  },
+  "uniform_draw_share_on_ids_seen_under": {
+    "1": 0.003235060733687359,
+    "10": 0.0059818104132332295,
+    "100": 0.013550631752426295,
+    "1000": 0.09332845022279192,
+    "10000": 0.794909357260575
+  },
+  "corpus_mass_carried_by_top_k_ids": {
+    "100": 0.5027049024474114,
+    "500": 0.6910785646256876,
+    "1000": 0.7633222156993792,
+    "4000": 0.8974521548652793,
+    "8000": 0.9565328833333159
+  }
+}

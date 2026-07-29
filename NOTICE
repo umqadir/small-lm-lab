@@ -1,0 +1,30 @@
+small-lm-lab
+Copyright (c) 2026 Uzair Qadir
+
+The source code, scripts, documentation and analysis outputs in this repository
+are licensed under the MIT License. See LICENSE.
+
+Third-party data
+----------------
+
+No corpus text is redistributed in this repository. The scripts fetch both
+corpora from their upstream sources at run time.
+
+TinyStories V2 (GPT-4)
+  https://huggingface.co/datasets/roneneldan/TinyStories
+  Community Data License Agreement, Sharing, version 1.0 (CDLA-Sharing-1.0)
+
+FineWeb-Edu, sample-10BT
+  https://huggingface.co/datasets/HuggingFaceFW/fineweb-edu
+  Open Data Commons Attribution License version 1.0 (ODC-By 1.0)
+
+Derived artifact
+----------------
+
+data/tokenizer/tokenizer.json is a byte-level BPE vocabulary of 16,384 tokens
+trained on a sample of the two corpora above, and is redistributed here because
+reproducing any run requires the exact tokenizer. It is a derivative of those
+datasets and carries their terms in addition to the MIT License that covers the
+code: attribution to the two sources above under ODC-By 1.0, and the
+share-alike terms of CDLA-Sharing-1.0 for any onward distribution of the file or
+of data derived from it.

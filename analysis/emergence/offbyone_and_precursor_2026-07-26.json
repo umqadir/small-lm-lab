@@ -1,0 +1,102 @@
+{
+  "what": "Off-by-one attention controls and the previous-token precursor at the 40M checkpoint. Registered as supplementary diagnostics in docs/PREREGISTRATION.md, amendment 2026-07-26, before this was measured.",
+  "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/abl_lr1.2e-3/tokens_000040009728.pt",
+  "run": "abl_lr1.2e-3",
+  "tokens": 40009728,
+  "n_sequences": 8,
+  "note": "MONITORING count; registered is 256.",
+  "chance": 0.005411745041166204,
+  "timestamp": "2026-07-26T16:59:42.528599+00:00",
+  "question_1": {
+    "asks": "Is the elevated prefix-matching an induction head, or a head attending at a fixed relative offset? A fixed-offset head scores alike on key i, i+1 and i+2.",
+    "top_head": [
+      5,
+      7
+    ],
+    "prefix_matching_key_i_plus_1": 0.09613,
+    "token_matching_key_i": 0.00993,
+    "offset_plus_two_key_i_plus_2": 0.00738,
+    "ratio_prefix_over_token_matching": 9.68,
+    "ratio_prefix_over_offset_plus_two": 13.02,
+    "verdict": "INDUCTION, not positional. The score is 9.7 to 13.0 times higher at exactly the induction offset than at either neighbour. A fixed-offset positional head would show a ratio near 1."
+  },
+  "question_2": {
+    "asks": "Has the previous-token precursor formed before the induction heads?",
+    "max_prev_token": 0.93486,
+    "at_layer_head": [
+      2,
+      1
+    ],
+    "max_prefix_matching_same_checkpoint": 0.09613,
+    "verdict": "A previous-token head at layer 2 carries 0.935 of its attention on position j-1 and is mature, while the induction heads in layers 4 to 7 sit at 0.035 to 0.096 and are still forming. The precursor precedes the induction head, and this checkpoint catches the system between the two.",
+    "bears_on": "P4 of docs/PREDICTION_INDUCTION_EMERGENCE.md, which predicted exactly this ordering."
+  },
+  "question_3": {
+    "asks": "What are the OV circuits of the forming induction heads doing?",
+    "observation": "The two highest prefix-matching heads have NEGATIVE OV copying scores: L5H7 -0.6635 and L7H0 -0.7107. Their QK circuits have begun matching while their OV circuits are anti-copying.",
+    "bears_on": "P7, which predicted the OV circuit turns copying at or before the QK circuit turns matching. P7 is not yet scored, since no head has crossed 0.3, but the current sign points against it. Recorded now so that a P7 failure is reported rather than quietly dropped."
+  },
+  "per_head_top6": [
+    {
+      "layer": 5,
+      "head": 7,
+      "prefix_matching": 0.09613,
+      "token_matching": 0.00993,
+      "offset_plus_two": 0.00738,
+      "prev_token": 0.01641,
+      "entropy": 0.6928,
+      "ov_copying": -0.6635
+    },
+    {
+      "layer": 7,
+      "head": 0,
+      "prefix_matching": 0.06566,
+      "token_matching": 0.01467,
+      "offset_plus_two": 0.00886,
+      "prev_token": 0.01668,
+      "entropy": 0.7181,
+      "ov_copying": -0.7107
+    },
+    {
+      "layer": 6,
+      "head": 6,
+      "prefix_matching": 0.0529,
+      "token_matching": 0.00959,
+      "offset_plus_two": 0.00831,
+      "prev_token": 0.0239,
+      "entropy": 0.7282,
+      "ov_copying": -0.1811
+    },
+    {
+      "layer": 6,
+      "head": 7,
+      "prefix_matching": 0.05015,
+      "token_matching": 0.0116,
+      "offset_plus_two": 0.00759,
+      "prev_token": 0.01576,
+      "entropy": 0.725,
+      "ov_copying": 0.3957
+    },
+    {
+      "layer": 6,
+      "head": 1,
+      "prefix_matching": 0.03977,
+      "token_matching": 0.01143,
+      "offset_plus_two": 0.00828,
+      "prev_token": 0.01903,
+      "entropy": 0.7913,
+      "ov_copying": 0.0612
+    },
+    {
+      "layer": 4,
+      "head": 5,
+      "prefix_matching": 0.03516,
+      "token_matching": 0.00679,
+      "offset_plus_two": 0.00471,
+      "prev_token": 0.02092,
+      "entropy": 0.7248,
+      "ov_copying": 0.4554
+    }
+  ],
+  "git_head": "362adb9320b97caf5ae7449f9679a63207c1d98e"
+}

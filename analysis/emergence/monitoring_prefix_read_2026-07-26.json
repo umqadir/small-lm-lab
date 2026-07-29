@@ -1,0 +1,83 @@
+{
+  "what": "MONITORING read of the registered prefix-matching score at a reduced sequence count. NOT the registered measurement.",
+  "registered_n_sequences": 256,
+  "n_sequences_used": 8,
+  "why_reduced": "machine load average was above 100 from unrelated projects and the registered count did not complete. n_sequences is exposed by interp.py as a cost knob and changes no definition: same make_copy_sequences construction, same seed, same prefix_matching_indices pairs, same repeat_len 128.",
+  "instrument": "small_lm_lab.interp.prefix_matching_per_sequence, unmodified",
+  "device": "cpu",
+  "seed": 1,
+  "chance_level": 0.005411745041166204,
+  "registered_thresholds": {
+    "induction_head": 0.2,
+    "phase_low": 0.1,
+    "phase_high": 0.3
+  },
+  "timestamp": "2026-07-26T16:33:56.405523+00:00",
+  "readings": [
+    {
+      "run": "abl_lr1.2e-3",
+      "lr_schedule": "cosine to 10 percent over 40M tokens",
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/abl_lr1.2e-3/tokens_000040009728.pt",
+      "tokens": 40009728,
+      "max_prefix_matching": 0.09613,
+      "argmax_layer_head": [
+        5,
+        7
+      ],
+      "heads_above_0.2": 0,
+      "per_layer_max": [
+        0.0055,
+        0.0087,
+        0.0039,
+        0.0049,
+        0.0352,
+        0.0961,
+        0.0529,
+        0.0657
+      ]
+    },
+    {
+      "run": "size30m_staged_seed1",
+      "lr_schedule": "constant 1.2e-3 after 4M-token warmup (Stage A)",
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
+      "tokens": 8011776,
+      "max_prefix_matching": 0.01139,
+      "argmax_layer_head": [
+        6,
+        0
+      ],
+      "heads_above_0.2": 0,
+      "per_layer_max": [
+        0.0067,
+        0.0064,
+        0.0067,
+        0.0072,
+        0.004,
+        0.0078,
+        0.0114,
+        0.0045
+      ]
+    }
+  ],
+  "reading": "At 40,009,728 tokens the maximum prefix-matching score is 0.09613, which is 17.8 times chance and immediately below the registered phase-change lower bound of 0.1. At 8,011,776 tokens it is 0.01139, 2.1 times chance and at floor. The signal is concentrated in layers 4 to 7 (0.0352, 0.0961, 0.0529, 0.0657) against layers 0 to 3 at or near chance, which is where induction heads are expected to sit.",
+  "caveats": [
+    "8 sequences, not the registered 256. Adequate to separate 0.096 from chance 0.0054, not adequate for a reported figure.",
+    "abl_lr1.2e-3 decays its learning rate cosine to 10 percent by 40M tokens, while Stage A holds 1.2e-3 constant. The ablation run is therefore a CONSERVATIVE proxy: a constant-rate run should reach a given point no later.",
+    "The two checkpoints come from two different runs. Only the 8,011,776-token one is Stage A.",
+    "Superseded for any reported number by the registered-count sweep."
+  ],
+  "provenance": {
+    "code_sha256": "4b407de66c0fbb5ed7f9af02e92d235a2a5402e83fc1f411c04536b71765d8e5",
+    "code": "import importlib.util, sys, time\nfrom pathlib import Path\nimport numpy as np, torch\nfrom small_lm_lab import interp\nfrom small_lm_lab.config import get_config\nREPO = Path(\"$SMALL_LM_LAB_REPO\")\nspec = importlib.util.spec_from_file_location(\"es\", REPO/\"scripts\"/\"06_evaluate.py\")\nes = importlib.util.module_from_spec(spec); spec.loader.exec_module(es)\ncfg = get_config(\"size30m\")\nN = 8\nfor name in [\"abl_lr1.2e-3/tokens_000040009728.pt\", \"size30m_staged_seed1/tokens_000008011776.pt\"]:\n    p = Path(\"$SMALL_LM_LAB_BULK_ROOT/checkpoints\")/name\n    t0=time.time(); model, tokens = es.load_model(cfg, p, \"cpu\")\n    pm = interp.prefix_matching_per_sequence(model, \"cpu\", n_sequences=N, batch_size=4).mean(0)\n    l,h = np.unravel_index(int(pm.argmax()), pm.shape)\n    print(f\"{name}\\n  tokens {tokens:,}  max prefix-matching {pm.max():.5f} at layer {l} head {h}\"\n          f\"  [chance 0.00541]  heads>0.2: {int((pm>0.2).sum())}  ({time.time()-t0:.0f}s)\")\n    print(\"  per-layer max: \" + \" \".join(f\"L{i}:{v:.4f}\" for i,v in enumerate(pm.max(1))))\n    sys.stdout.flush()\n",
+    "code_redaction": {
+      "applied": "Two absolute filesystem paths in provenance.code were replaced with environment-variable forms after recording, for publication. No other character was changed.",
+      "placeholders": [
+        "$SMALL_LM_LAB_REPO (repository root)",
+        "$SMALL_LM_LAB_BULK_ROOT/checkpoints (bulk checkpoint root)"
+      ],
+      "code_sha256_covers": "the original unredacted string, so it does NOT match the redacted text above",
+      "consequence": "Recomputing sha256 over provenance.code as published will not reproduce code_sha256. That is expected and is what this field records."
+    },
+    "git_head": "b3146a9ec6e847116b1f49e4058c945120817f54"
+  }
+}

@@ -1,0 +1,38 @@
+{
+  "metadata": {
+    "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/abl_lr2.4e-3/tokens_000040009728.pt",
+    "random_init": false,
+    "config": "size30m",
+    "n_params": 34087424,
+    "tokens": 40009728,
+    "device": "mps",
+    "seed": 1,
+    "split": "val",
+    "suite": "perplexity",
+    "n_resamples": 1000,
+    "batch_size": 16,
+    "tokenized_root": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized",
+    "timestamp": "2026-07-21T20:09:31.081815+00:00",
+    "torch_version": "2.13.0"
+  },
+  "perplexity": {
+    "tinystories": {
+      "domain": "tinystories",
+      "split": "val",
+      "perplexity": 6.16805627812347,
+      "ci_low": 6.1340575953722105,
+      "ci_high": 6.199622042364556,
+      "n_windows": 9827,
+      "n_tokens": 5031424
+    },
+    "fineweb_edu": {
+      "domain": "fineweb_edu",
+      "split": "val",
+      "perplexity": 139.32225670470342,
+      "ci_low": 138.4210269533735,
+      "ci_high": 140.22395096578543,
+      "n_windows": 9801,
+      "n_tokens": 5018112
+    }
+  }
+}

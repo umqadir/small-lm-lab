@@ -1,0 +1,41 @@
+__pycache__/
+*.pyc
+.venv/
+.DS_Store
+runs/
+*.egg-info/
+
+# Model weights, optimizer state and token streams. These live outside the
+# repository under SMALL_LM_LAB_BULK_ROOT. The patterns are here so that a bulk
+# root pointed inside the tree cannot be staged by `git add -A`.
+*.pt
+*.bin
+*.safetensors
+*.ckpt
+*.npy
+*.npz
+*.h5
+*.parquet
+*.arrow
+checkpoints/
+data/tokenized/
+data/raw/
+data/hf_cache/
+!data/tokenizer/tokenizer.json
+
+# Live scheduler state: logs and markers rewritten every watcher cycle.
+analysis/schedule/
+# Live staged-run probe curve, appended as checkpoints arrive.
+analysis/staged/
+# Scheduler lock-wait logs. They record which local process held the shared
+# training lock, which is machine state rather than a measurement.
+analysis/pilot/watcher.log
+
+# Editor and tooling configuration.
+.claude/
+
+# internal working notes
+analysis/emergence/*_2026-*.md
+docs/PREREGISTRATION.md
+docs/PREDICTION_INDUCTION_EMERGENCE.md
+analysis/**/NOISE_FLOOR_RESULT.md

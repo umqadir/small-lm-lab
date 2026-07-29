@@ -1,0 +1,14 @@
+tokenizer: data/tokenizer/tokenizer.json (vocab 16384, <|endoftext|> id 0)
+output:    $SMALL_LM_LAB_BULK_ROOT/data/tokenized
+workers:   8
+ngram:     200
+
+[run ] fineweb_edu_ext: 2,329,044 docs -> filtered train-ext shards
+       building holdout 200-gram hash table from fineweb_edu val + test
+       10,188,221 unique holdout 200-grams -> fineweb_edu_holdout_200gram_hashes.npy
+       500,000 docs seen, 527 dropped, 563 M tokens kept
+       1,000,000 docs seen, 863 dropped, 1121 M tokens kept
+       1,500,000 docs seen, 1,224 dropped, 1684 M tokens kept
+       2,000,000 docs seen, 1,699 dropped, 2246 M tokens kept
+       self-verifying: scanning shards for any residual holdout n-gram
+self-verification found 2 holdout 200-grams in the filtered shards; decontamination did not converge, not writing meta

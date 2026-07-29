@@ -1,0 +1,38 @@
+{
+  "domain": "fineweb_edu",
+  "split": "train",
+  "produced_by": "scripts/13_filter_ext.py",
+  "shards": [
+    {
+      "file": "fineweb_edu_train_ext_000.bin",
+      "bytes": 1023242484,
+      "tokens": 511621242
+    },
+    {
+      "file": "fineweb_edu_train_ext_001.bin",
+      "bytes": 1021298062,
+      "tokens": 510649031
+    },
+    {
+      "file": "fineweb_edu_train_ext_002.bin",
+      "bytes": 1022543998,
+      "tokens": 511271999
+    },
+    {
+      "file": "fineweb_edu_train_ext_003.bin",
+      "bytes": 1022503172,
+      "tokens": 511251586
+    },
+    {
+      "file": "fineweb_edu_train_ext_004.bin",
+      "bytes": 1023319908,
+      "tokens": 511659954
+    },
+    {
+      "file": "fineweb_edu_train_ext_005.bin",
+      "bytes": 107729496,
+      "tokens": 53864748
+    }
+  ],
+  "tokens": 2610318560
+}

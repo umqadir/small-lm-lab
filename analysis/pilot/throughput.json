@@ -1,0 +1,136 @@
+{
+  "metadata": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "torch_version": "2.13.0",
+    "mlx_version": "0.32.0",
+    "mps_available": true,
+    "seq_len": 512,
+    "vocab": 16384,
+    "lr": 0.0001,
+    "warmup_steps": 10,
+    "timed_steps_full": 30,
+    "timed_steps_slow": 8,
+    "rounds": 3,
+    "paired_design": "The two frameworks are measured back to back within each cell and the grid repeats for several rounds, so the framework comparison is not confounded by background load on this shared machine.",
+    "timestamp": "2026-07-17T10:32:12.905101+00:00"
+  },
+  "cells": [
+    {
+      "framework": "mlx",
+      "config": "size30m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 4516.260109324546,
+      "sec_per_step": 3.6277804208337328,
+      "peak_mem_gb": 9.746798764,
+      "rss_gb": 0.028655616,
+      "loss_start": 9.800490379333496,
+      "loss_end": 9.740984916687012,
+      "timed_steps": 30,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 4.52197265625
+    },
+    {
+      "framework": "mlx",
+      "config": "size60m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 2837.411549786024,
+      "sec_per_step": 5.774276911375637,
+      "peak_mem_gb": 12.638304596,
+      "rss_gb": 0.1077248,
+      "loss_start": 9.815967559814453,
+      "loss_end": 9.7679443359375,
+      "timed_steps": 8,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 3.328125
+    },
+    {
+      "framework": "mlx",
+      "config": "size120m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 769.6574464108647,
+      "sec_per_step": 21.287392302125227,
+      "peak_mem_gb": 18.5099159,
+      "rss_gb": 0.030261248,
+      "loss_start": 9.853806495666504,
+      "loss_end": 9.794090270996094,
+      "timed_steps": 8,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 24.410888671875
+    },
+    {
+      "framework": "mlx",
+      "config": "size30m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 4620.248033862986,
+      "sec_per_step": 3.546129965300012,
+      "peak_mem_gb": 9.746798764,
+      "rss_gb": 0.10797056,
+      "loss_start": 9.808001518249512,
+      "loss_end": 9.739392280578613,
+      "timed_steps": 30,
+      "error": null,
+      "round": 1,
+      "load_avg_1min": 45.506103515625
+    },
+    {
+      "framework": "mlx",
+      "config": "size60m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 2687.9116565416916,
+      "sec_per_step": 6.0954384271244635,
+      "peak_mem_gb": 12.638304596,
+      "rss_gb": 0.029147136,
+      "loss_start": 9.82206916809082,
+      "loss_end": 9.76905345916748,
+      "timed_steps": 8,
+      "error": null,
+      "round": 1,
+      "load_avg_1min": 35.00927734375
+    },
+    {
+      "framework": "mlx",
+      "config": "size120m",
+      "batch_size": 32,
+      "precision": "bf16",
+      "tokens_per_sec": 750.3777520335793,
+      "sec_per_step": 21.83433604687525,
+      "peak_mem_gb": 18.5099159,
+      "rss_gb": 0.026394624,
+      "loss_start": 9.860289573669434,
+      "loss_end": 9.787898063659668,
+      "timed_steps": 8,
+      "error": null,
+      "round": 1,
+      "load_avg_1min": 64.65478515625
+    }
+  ],
+  "summary": {
+    "per_cell": {
+      "size30m_bs32": {
+        "torch_tokens_per_sec_median": null,
+        "mlx_tokens_per_sec_median": 4568.254071593766,
+        "mlx_over_torch_ratio_median": null,
+        "n_rounds_torch": 0,
+        "n_rounds_mlx": 2
+      },
+      "size120m_bs32": {
+        "torch_tokens_per_sec_median": null,
+        "mlx_tokens_per_sec_median": 760.0175992222221,
+        "mlx_over_torch_ratio_median": null,
+        "n_rounds_torch": 0,
+        "n_rounds_mlx": 2
+      }
+    },
+    "paired_ratio_median": null,
+    "load_avg_1min_median": 29.7100830078125
+  }
+}

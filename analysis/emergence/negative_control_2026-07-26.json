@@ -1,0 +1,58 @@
+{
+  "what": "P8 negative control from docs/PREDICTION_INDUCTION_EMERGENCE.md, plus the instrument floor for every emergence metric, measured on a random-init size30m.",
+  "why": "A metric that reports induction on random weights is wrong, and no trained-model number from it would be admissible. This is the floor every trained reading is measured against.",
+  "config": "size30m",
+  "n_params": 34087424,
+  "init_seed": 1,
+  "device": "cpu",
+  "n_sequences": 32,
+  "copying_n_sequences": 64,
+  "note": "reduced sequence counts (registered are 256 and 512); the contrast against analytic chance does not need the registered count.",
+  "timestamp": "2026-07-26T16:52:35.673282+00:00",
+  "analytic_chance": {
+    "prefix_matching_at_repeat_len_128": 0.005411745041166204,
+    "copying_exact_match": 6.103888176768602e-05,
+    "normalised_entropy_if_uniform": 1.0,
+    "ov_copying_score_if_unstructured": 0.0
+  },
+  "measured": {
+    "max_prefix_matching": 0.005614,
+    "max_token_matching": 0.005674,
+    "max_prev_token": 0.020575,
+    "max_normalised_entropy": 0.9977,
+    "heads_above_registered_0.2": 0,
+    "ov_copying_score_min": -0.0558,
+    "ov_copying_score_max": 0.0498,
+    "ov_copying_score_mean": 0.0003,
+    "copying_exact_match": 0.0,
+    "copying_ci": [
+      0.0,
+      0.0
+    ],
+    "copying_gate_clears_chance": false
+  },
+  "verdict": {
+    "P8_max_prefix_matching_below_0.05": true,
+    "P8_no_head_above_0.2": true,
+    "P8_copying_does_not_clear_chance": true,
+    "P8": "PASS",
+    "reading": "max prefix-matching 0.005614 against analytic chance 0.005411745, a ratio of 1.037. Normalised entropy 0.9977 against 1.0 for uniform attention over the causal prefix. OV copying score centred on +0.0003 across all 64 heads. Every instrument sits at its analytic floor."
+  },
+  "contrast_with_trained_checkpoints": {
+    "source": "analysis/emergence/monitoring_prefix_read_2026-07-26.json",
+    "random_init": 0.005614,
+    "stage_a_8M": 0.01139,
+    "abl_lr1.2e-3_40M": 0.09613,
+    "note": "ratios to the random-init floor: 1.0x, 2.0x, 17.1x."
+  },
+  "ov_reduction_verification": {
+    "claim": "the 64x64 reduction of the 16384x16384 OV circuit reproduces the full eigenvalue score exactly, not approximately",
+    "method": "materialised the full V x V circuit on a 53-vocab 24-dim 2-layer 3-head model and compared eigenvalue scores head by head",
+    "max_abs_difference": 6.939e-16,
+    "constructed_identity_ov_head_score": 1.0,
+    "constructed_negated_ov_head_score": -1.0,
+    "positive_rescale_drift": 6.987e-09,
+    "verified_by": "lead, independently of the module author"
+  },
+  "git_head": "a1ce2eea9b6d1539ae0b52706c7fa758820106f2"
+}

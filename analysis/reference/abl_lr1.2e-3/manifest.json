@@ -1,0 +1,89 @@
+{
+  "run_name": "abl_lr1.2e-3",
+  "started_at": "2026-07-17T11:15:41.880353+00:00",
+  "train_config": {
+    "run_name": "abl_lr1.2e-3",
+    "size": "size30m",
+    "framework": "mlx",
+    "device": "mps",
+    "peak_lr": 0.0012,
+    "total_tokens": 40000000,
+    "warmup_fraction": 0.02,
+    "seed": 1,
+    "batch_size": 32,
+    "micro_batch_size": null,
+    "mix": {
+      "tinystories": 0.7,
+      "fineweb_edu": 0.3
+    },
+    "checkpoint_root": "$SMALL_LM_LAB_BULK_ROOT/checkpoints",
+    "out_root": "$SMALL_LM_LAB_BULK_ROOT/runs",
+    "tokenized_root": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized",
+    "log_every": 10,
+    "val_every": 200,
+    "val_batches": 16,
+    "resume_state_every": 500,
+    "projection_after": 20,
+    "stop_after_steps": null,
+    "model_config": null,
+    "checkpoint_token_targets": null,
+    "verbose": true
+  },
+  "model_config": {
+    "vocab_size": 16384,
+    "d_model": 512,
+    "n_layers": 8,
+    "n_heads": 8,
+    "context_len": 512,
+    "head_dim": 64,
+    "rope_theta": 10000.0,
+    "mlp_hidden": 1408,
+    "rmsnorm_eps": 1e-05,
+    "tie_embeddings": true
+  },
+  "n_params": 34087424,
+  "n_params_adapter": 34087424,
+  "tokens_per_step": 16384,
+  "batch_size": 32,
+  "micro_batch_size": 32,
+  "accum_steps": 1,
+  "total_steps": 2442,
+  "warmup_steps": 49,
+  "seed": 1,
+  "data_mix": {
+    "tinystories": 0.7,
+    "fineweb_edu": 0.3
+  },
+  "framework": "mlx",
+  "framework_version": "0.32.0",
+  "device": "mps",
+  "torch_version": "2.13.0",
+  "tokenizer_sha256": "5caa638a1c34d87da9febe64e25f664b6d99f9a4b476f8890b1069e6ba679674",
+  "tokenizer_path": "data/tokenizer/tokenizer.json",
+  "git": {
+    "commit": "f0efe03087609b8d79142adc146c0f5bf552f9d1",
+    "dirty": false
+  },
+  "machine": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "processor": "arm",
+    "python": "3.12.11"
+  },
+  "optimizer": {
+    "name": "adamw",
+    "beta1": 0.9,
+    "beta2": 0.95,
+    "eps": 1e-08,
+    "weight_decay": 0.1,
+    "decay_excludes": [
+      "embedding",
+      "rmsnorm weights"
+    ],
+    "grad_clip_norm": 1.0,
+    "schedule": "cosine to 10 percent of peak with linear warmup",
+    "peak_lr": 0.0012,
+    "warmup_fraction": 0.02
+  },
+  "resumes": []
+}

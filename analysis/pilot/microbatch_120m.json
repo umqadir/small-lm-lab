@@ -1,0 +1,96 @@
+{
+  "metadata": {
+    "platform": "macOS-26.5.1-arm64-arm-64bit",
+    "machine": "arm64",
+    "torch_version": "2.13.0",
+    "mlx_version": "0.32.0",
+    "mps_available": true,
+    "seq_len": 512,
+    "vocab": 16384,
+    "lr": 0.0001,
+    "warmup_steps": 10,
+    "timed_steps_full": 30,
+    "timed_steps_slow": 8,
+    "rounds_requested": 1,
+    "grid": {
+      "frameworks": [
+        "mlx"
+      ],
+      "configs": [
+        "size120m"
+      ],
+      "batch_sizes": [
+        4,
+        8,
+        16,
+        32
+      ]
+    },
+    "paired_design": "The two frameworks are measured back to back within each cell and the grid repeats for several rounds, so the framework comparison is not confounded by background load on this shared machine.",
+    "complete": false,
+    "timestamp": "2026-07-17T10:38:51.370147+00:00"
+  },
+  "cells": [
+    {
+      "framework": "mlx",
+      "config": "size120m",
+      "batch_size": 4,
+      "precision": "bf16",
+      "tokens_per_sec": 1213.5819113971534,
+      "sec_per_step": 1.6875663527665892,
+      "peak_mem_gb": 3.548289772,
+      "rss_gb": 0.234176512,
+      "loss_start": 9.836767196655273,
+      "loss_end": 9.885045051574707,
+      "timed_steps": 30,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 81.78076171875
+    },
+    {
+      "framework": "mlx",
+      "config": "size120m",
+      "batch_size": 8,
+      "precision": "bf16",
+      "tokens_per_sec": 1365.2554505767125,
+      "sec_per_step": 3.000171138866184,
+      "peak_mem_gb": 5.574534876,
+      "rss_gb": 0.234029056,
+      "loss_start": 9.867733001708984,
+      "loss_end": 9.823131561279297,
+      "timed_steps": 30,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 84.320068359375
+    },
+    {
+      "framework": "mlx",
+      "config": "size120m",
+      "batch_size": 16,
+      "precision": "bf16",
+      "tokens_per_sec": 1365.1764328378163,
+      "sec_per_step": 6.000689583375788,
+      "peak_mem_gb": 9.886328572,
+      "rss_gb": 0.129155072,
+      "loss_start": 9.852845191955566,
+      "loss_end": 9.823302268981934,
+      "timed_steps": 8,
+      "error": null,
+      "round": 0,
+      "load_avg_1min": 93.685302734375
+    }
+  ],
+  "summary": {
+    "per_cell": {
+      "size120m_bs16": {
+        "torch_tokens_per_sec_median": null,
+        "mlx_tokens_per_sec_median": 1365.1764328378163,
+        "mlx_over_torch_ratio_median": null,
+        "n_rounds_torch": 0,
+        "n_rounds_mlx": 1
+      }
+    },
+    "paired_ratio_median": null,
+    "load_avg_1min_median": 84.320068359375
+  }
+}

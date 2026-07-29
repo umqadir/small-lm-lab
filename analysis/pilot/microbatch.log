@@ -1,0 +1,13 @@
+Platform: macOS-26.5.1-arm64-arm-64bit  machine=arm64
+torch 2.13.0  mlx 0.32.0  mps=True
+grid: frameworks=['mlx'] configs=['size120m'] batch_sizes=[4, 8, 16, 32]
+rounds: 1, frameworks paired within a cell
+
+--- round 1 of 1 ---
+[run ] r0 mlx size120m bs4 ...
+       -> 1,214 tok/s, 1.688 s/step, bf16, load 81.8
+[run ] r0 mlx size120m bs8 ...
+       -> 1,365 tok/s, 3.000 s/step, bf16, load 84.3
+[run ] r0 mlx size120m bs16 ...
+       -> 1,365 tok/s, 6.001 s/step, bf16, load 93.7
+[run ] r0 mlx size120m bs32 ...

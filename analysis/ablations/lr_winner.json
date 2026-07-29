@@ -1,0 +1,11 @@
+{
+  "time": "2026-07-21T20:19:35Z",
+  "rule": "argmin TinyStories validation perplexity, final 40M checkpoint, per docs/PREREGISTRATION.md",
+  "scores": {
+    "abl_lr6e-4": 5.218944574575956,
+    "abl_lr1.2e-3": 5.015967329537582,
+    "abl_lr2.4e-3": 6.16805627812347
+  },
+  "winner": "abl_lr1.2e-3",
+  "winning_lr": 0.0012
+}

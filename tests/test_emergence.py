@@ -32,7 +32,7 @@ import importlib.util
 import json
 import sys
 from pathlib import Path
-from typing import Any, Optional
+from typing import Any, Optional, Sequence
 
 import numpy as np
 import pytest
@@ -791,6 +791,231 @@ def test_head_churn_counts_heads_entering_and_leaving_the_registered_set() -> No
     # And it reaches the summary.
     summary = emergence.trajectory_summary(points, n_resamples=5)
     assert summary["head_churn"] == churn
+
+
+# ----------------------------------------------------------------------------
+# the abruptness criterion
+# ----------------------------------------------------------------------------
+
+# A ten-point grid whose crossing is placed by the score trajectory each test
+# supplies. Token counts are decades apart so that W is exactly the number of
+# grid steps, which makes an arithmetic error in either visible.
+ABRUPT_GRID = [10**k for k in range(1, 11)]
+
+
+def abruptness_inputs(
+    scores: Sequence[float], losses: Sequence[float]
+) -> tuple[dict[int, float], dict[int, float]]:
+    assert len(scores) == len(losses) == len(ABRUPT_GRID)
+    return (
+        dict(zip(ABRUPT_GRID, (float(s) for s in scores))),
+        dict(zip(ABRUPT_GRID, (float(v) for v in losses))),
+    )
+
+
+def test_abruptness_thresholds_are_the_registered_ones() -> None:
+    """The 2026-07-26 amendment fixes ABRUPT at G <= 3 and F <= 0.10, GRADUAL at
+    G >= 7 or F >= 0.30, and everything else at the third verdict. A test that
+    only exercised the branches would not notice a threshold being edited."""
+    assert emergence.G_ABRUPT_MAX == 3
+    assert emergence.F_ABRUPT_MAX == 0.10
+    assert emergence.G_GRADUAL_MIN == 7
+    assert emergence.F_GRADUAL_MIN == 0.30
+    assert emergence.INDETERMINATE == "INDETERMINATE AT THIS RESOLUTION"
+
+
+def test_abruptness_is_abrupt_when_both_g_and_f_are_small() -> None:
+    # Crossing from position 3 to position 5, so G = 2 and W = 2 decades. The
+    # loss falls by 0.1 of 10.0 inside the interval, so F = 0.01.
+    scores = [0.01, 0.02, 0.03, 0.05, 0.20, 0.90, 0.90, 0.90, 0.90, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 10.65, 10.6, 8.0, 5.0, 2.0, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.verdict == emergence.ABRUPT
+    assert verdict.start_tokens == 10**4 and verdict.end_tokens == 10**6
+    assert verdict.start_position == 3 and verdict.end_position == 5
+    assert verdict.grid_steps == 2
+    assert verdict.width_decades == pytest.approx(2.0)
+    assert verdict.loss_fraction == pytest.approx(0.1 / 10.0)
+    assert verdict.resolution_limited is False
+    assert verdict.width_is_bound is False
+    assert verdict.loss_domain == "fineweb_edu"
+
+
+def test_abruptness_is_gradual_when_the_crossing_spans_seven_grid_steps() -> None:
+    scores = [0.01, 0.02, 0.05, 0.11, 0.12, 0.13, 0.14, 0.15, 0.20, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 10.6, 10.5, 10.4, 10.3, 10.2, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.grid_steps == 7
+    assert verdict.verdict == emergence.GRADUAL
+
+
+def test_abruptness_is_gradual_on_f_alone_however_narrow_the_crossing() -> None:
+    """F is what makes the word mean anything. A crossing inside one grid
+    interval that carries a third of the run's loss improvement is the steep
+    part of ordinary learning, and the amendment says so before the data."""
+    scores = [0.01, 0.02, 0.03, 0.05, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 7.5, 5.0, 3.0, 2.0, 1.5, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.grid_steps == 1
+    assert verdict.loss_fraction == pytest.approx(3.2 / 10.0)
+    assert verdict.verdict == emergence.GRADUAL
+
+
+def test_abruptness_is_indeterminate_between_the_two_verdicts() -> None:
+    # G = 5, which is neither <= 3 nor >= 7, and F = 0.2, which is neither
+    # <= 0.10 nor >= 0.30.
+    scores = [0.01, 0.02, 0.05, 0.11, 0.12, 0.13, 0.14, 0.90, 0.90, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 10.0, 9.0, 8.9, 8.8, 5.0, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.grid_steps == 5
+    assert verdict.loss_fraction == pytest.approx(2.0 / 10.0)
+    assert verdict.verdict == emergence.INDETERMINATE
+
+
+def test_a_crossing_inside_one_grid_interval_reports_a_bound_not_a_width() -> None:
+    """G == 1 means the transition completed faster than the apparatus can see.
+    The amendment keeps ABRUPT available there and requires the width to be
+    carried as a bound."""
+    scores = [0.01, 0.02, 0.03, 0.05, 0.90, 0.90, 0.90, 0.90, 0.90, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 10.65, 9.0, 6.0, 4.0, 2.0, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.grid_steps == 1
+    assert verdict.resolution_limited is True
+    assert verdict.width_is_bound is True
+    assert verdict.loss_fraction == pytest.approx(0.05 / 10.0)
+    assert verdict.verdict == emergence.ABRUPT
+    assert "upper bound" in verdict.note
+
+
+def test_abruptness_reports_no_crossing_rather_than_a_verdict() -> None:
+    scores = [0.01] * 10
+    losses = [11.0 - k for k in range(10)]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.verdict == emergence.NO_CROSSING
+    assert verdict.grid_steps is None
+    assert verdict.width_decades is None
+    assert verdict.loss_fraction is None
+
+
+def test_abruptness_refuses_a_loss_curve_on_different_checkpoints() -> None:
+    """G counts positions in the grid and F is read at four of them, so a loss
+    curve measured on other checkpoints would silently change what G counts."""
+    scores = [0.01, 0.02, 0.03, 0.05, 0.20, 0.90, 0.90, 0.90, 0.90, 0.90]
+    losses = [11.0, 10.9, 10.8, 10.7, 10.65, 10.6, 8.0, 5.0, 2.0, 1.0]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    del curve[10**9]
+    with pytest.raises(ValueError, match="same checkpoints"):
+        emergence.abruptness_verdict(max_scores, curve)
+
+
+def test_abruptness_withholds_f_when_the_loss_never_improved() -> None:
+    """A ratio whose denominator is not positive is not a small number or a
+    large one. The verdict falls to the third branch, which is what it is for."""
+    scores = [0.01, 0.02, 0.03, 0.05, 0.20, 0.90, 0.90, 0.90, 0.90, 0.90]
+    losses = [1.0] * 9 + [1.5]
+    max_scores, curve = abruptness_inputs(scores, losses)
+    verdict = emergence.abruptness_verdict(max_scores, curve)
+    assert verdict.verdict == emergence.INDETERMINATE
+    assert verdict.loss_fraction is None
+    assert verdict.grid_steps == 2
+    assert "no denominator" in verdict.note
+
+
+# ----------------------------------------------------------------------------
+# the loss-bump detector
+# ----------------------------------------------------------------------------
+
+def power_law_losses(n: int = 34, a: float = 3.0511, b: float = -0.08) -> dict[int, float]:
+    """A validation curve that is exactly a power law in tokens, no bump.
+
+    34 log-spaced points from 1e6 to about 3.4e9 tokens, and a loss running from
+    7.00 to 3.65 nats. The shape of the registered grid and the scale of a real
+    validation curve, because the detector's sensitivity depends on both how
+    many points the residual standard deviation is taken over and how large the
+    excursion is relative to the loss. See the last test in this section.
+    """
+    tokens = [int(10**6 * 1.28**k) for k in range(n)]
+    return {t: float(np.exp(a + b * np.log(t))) for t in tokens}
+
+
+def test_no_bump_on_a_curve_that_is_exactly_a_power_law() -> None:
+    """The detector's null. A curve the fit reproduces has residuals at float
+    noise, and a detector that finds a bump there finds one anywhere."""
+    bump = emergence.loss_bump(power_law_losses(), domain="fineweb_edu")
+    assert bump.bumps == []
+    assert bump.residual_sd == pytest.approx(0.0, abs=1e-9)
+    assert bump.log_slope == pytest.approx(-0.08)
+    assert max(abs(r) for r in bump.residual) < 1e-9
+
+
+def test_a_planted_bump_is_found_with_its_location() -> None:
+    losses = power_law_losses()
+    grid = sorted(losses)
+    for token in grid[8:10]:
+        losses[token] += 0.30
+    bump = emergence.loss_bump(losses, domain="fineweb_edu")
+    assert len(bump.bumps) == 1
+    found = bump.bumps[0]
+    assert found["start_tokens"] == grid[8]
+    assert found["end_tokens"] == grid[9]
+    assert found["n_checkpoints"] == 2
+    assert found["peak_residual"] > bump.threshold
+
+
+def test_a_single_high_checkpoint_is_not_a_bump() -> None:
+    """The registered run length is two consecutive checkpoints. One point above
+    the bar is a point above the bar."""
+    losses = power_law_losses()
+    grid = sorted(losses)
+    losses[grid[9]] += 0.50
+    bump = emergence.loss_bump(losses, domain="fineweb_edu")
+    assert bump.bumps == []
+    assert max(bump.residual) > bump.threshold
+
+
+def test_the_bump_bar_is_three_sample_standard_deviations() -> None:
+    losses = power_law_losses()
+    grid = sorted(losses)
+    for token in grid[8:10]:
+        losses[token] += 0.30
+    bump = emergence.loss_bump(losses)
+    assert bump.ddof == 1
+    assert bump.threshold == pytest.approx(3.0 * bump.residual_sd)
+    assert bump.residual_sd == pytest.approx(
+        float(np.std(np.asarray(bump.residual), ddof=1))
+    )
+
+
+def test_a_wide_bump_inflates_the_bar_it_has_to_clear() -> None:
+    """A property of the registered detector, pinned rather than corrected.
+
+    The standard deviation is taken over the whole fitted window, so a bump
+    contributes to the bar it is measured against. A rectangular excursion over
+    k of n points has residual about c(1 - k/n) against a bar of
+    3c sqrt(k(n-k)/(n(n-1))), which it clears only while (n-k)(n-1) > 9kn. At
+    n = 34 that holds at k = 2 and k = 3 and fails from k = 4, whatever the
+    height c, and the measurement below agrees with the algebra at four heights
+    two orders of magnitude apart. The detector is therefore sensitive to narrow
+    excursions and blind to wide ones, which is worth knowing before a null
+    result from it is read as the absence of a bump."""
+    grid = sorted(power_law_losses())
+    for k, expected in ((1, 0), (2, 1), (3, 1), (4, 0), (6, 0)):
+        for height in (0.05, 0.2, 1.0, 5.0):
+            losses = power_law_losses()
+            for token in grid[8 : 8 + k]:
+                losses[token] += height
+            assert len(emergence.loss_bump(losses).bumps) == expected
+
+
+def test_loss_bump_refuses_a_curve_too_short_to_fit() -> None:
+    with pytest.raises(ValueError, match="at least 3"):
+        emergence.loss_bump({10**6: 6.0, 2 * 10**6: 5.0})
 
 
 # ----------------------------------------------------------------------------

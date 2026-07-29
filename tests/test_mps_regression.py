@@ -40,7 +40,7 @@ import numpy as np
 import pytest
 import torch
 
-from small_lm_lab import evaluate, interp
+from small_lm_lab import emergence, evaluate, interp
 from small_lm_lab.config import ModelConfig
 from small_lm_lab.model_torch import TransformerLM
 
@@ -83,6 +83,31 @@ def test_no_device_side_float64_casts() -> None:
     assert not offenders, (
         ".double() reached without .cpu() first; MPS has no float64, so this "
         f"raises on the device: {offenders}"
+    )
+
+
+def test_no_combined_device_and_float64_to_calls() -> None:
+    """No `.to(...)` may name a device and float64 in the same call.
+
+    `.to(device="cpu", dtype=torch.float64)` reads as a move followed by a
+    cast and is neither: torch casts on the SOURCE device, so on MPS it raises
+    the same error `.double()` on a device tensor raises. The `.double(` check
+    above does not see this spelling, and the emergence module's OV circuit
+    carried it undetected until the first MPS run of that path. The move and
+    the cast have to be two calls, `.cpu().to(torch.float64)`.
+    """
+    offenders: list[str] = []
+    for py in sorted(list(SRC_DIR.glob("*.py")) + list(SCRIPTS_DIR.glob("*.py"))):
+        flat = re.sub(r"\s+", "", py.read_text())
+        for occ in re.finditer(r"\.to\(([^()]*)\)", flat):
+            arguments = occ.group(1)
+            names_device = "device=" in arguments
+            names_float64 = "float64" in arguments or "torch.double" in arguments
+            if names_device and names_float64:
+                offenders.append(f"{py.name}: .to({arguments})")
+    assert not offenders, (
+        "a .to() call names both a device and float64; the cast happens on the "
+        f"source device and MPS has no float64: {offenders}"
     )
 
 
@@ -218,6 +243,26 @@ def test_head_output_means_on_mps_match_cpu(models) -> None:
         torch.testing.assert_close(
             mean_cpu, mean_mps.cpu(), rtol=5e-3, atol=1e-4
         )
+
+
+@needs_mps
+def test_ov_scores_on_mps_match_cpu(models) -> None:
+    """The weights-only OV readings, which are the path that raised on MPS.
+
+    Both are computed in float64 on the CPU from weights that were widened
+    exactly, so the two devices agree to float64 and not merely to float32.
+    """
+    cpu, mps = models
+    ids = np.arange(1, 33, dtype=np.int64)
+    np.testing.assert_allclose(
+        emergence.ov_copying_score(cpu), emergence.ov_copying_score(mps), rtol=0, atol=0
+    )
+    np.testing.assert_allclose(
+        emergence.ov_self_logit_rank(cpu, ids),
+        emergence.ov_self_logit_rank(mps, ids),
+        rtol=0,
+        atol=0,
+    )
 
 
 @needs_mps

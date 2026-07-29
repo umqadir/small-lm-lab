@@ -76,7 +76,7 @@ Disk, under `SMALL_LM_LAB_BULK_ROOT`:
 |---|---|
 | Tokenized corpus, base splits | 1.44 GB |
 | Tokenized corpus, web extension | 5.22 GB |
-| Stage A checkpoints (34 bf16) | 2.3 GB |
+| Stage A checkpoints (34 bf16) | 2.89 GB |
 | Resume state | 442 MB |
 
 Web extension stages ~11.2 GB raw before tokenization, deleted after. Peak requirement ~20 GB.
@@ -92,7 +92,7 @@ tests/               correctness and regression suite
 analysis/            measured outputs
 ```
 
-Order: throughput pilot (01), download and tokenize (02-05), evaluate (06), train (07), causal battery (08), schedule runner (09), copying probe (10), curve comparison (11), contamination (12), decontamination (13), backend diagnostics (15-17), emergence sweep (19), vocabulary coverage (20). `scripts/smoke_gate.py` runs downstream stages against a tiny model first.
+Order: throughput pilot (01), download and tokenize (02-05), evaluate (06), train (07), causal battery (08), schedule runner (09), copying probe (10), curve comparison (11), contamination (12), decontamination (13), backend diagnostics (15-17), emergence sweep (19), vocabulary coverage (20), validation-loss curve (21), abruptness verdict (22), figures (23), prediction scorecard (24). `scripts/smoke_gate.py` runs downstream stages against a tiny model first.
 
 ## Running
 

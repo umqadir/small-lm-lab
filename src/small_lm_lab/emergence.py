@@ -47,7 +47,7 @@ consumed, so peak memory is one layer of one batch above the forward itself.
 Accumulation is float64 on the CPU, as everywhere else in the lab, because MPS
 has no float64 and a cast on the device raises.
 
-The amendment of 2026-07-26 adds three things to this, all of them additive:
+The amendment of 2026-07-26 adds four things to this, all of them additive:
 
   head_churn, under "Analyses registered as planned". The count of heads
       entering and leaving the set above the registered 0.2 between consecutive
@@ -67,6 +67,21 @@ The amendment of 2026-07-26 adds three things to this, all of them additive:
       checkpoint. crossing_time_interval asserts that instead of assuming it.
       The upward bias is disclosed and not corrected, since a bias-corrected
       maximum is a different statistic from the one the registration named.
+  abruptness_verdict, under "The abruptness criterion, which the headline
+      claim did not have". G, the grid intervals the crossing spans; W, its
+      width in decades of tokens; F, the share of the run's total FineWeb-Edu
+      validation-loss improvement that falls inside it; and the three-way
+      verdict those thresholds decide. It takes the validation-loss curve as an
+      argument rather than measuring it, because F is read on a quantity this
+      module does not produce and a second implementation of the validation
+      loss is a second number to keep in step with evaluate.py.
+  loss_bump, under "Loss-bump detector". A power law in tokens fitted to a
+      domain's validation loss across the grid, the signed residual in nats at
+      every checkpoint, and the runs of consecutive checkpoints whose residual
+      clears three times the residual standard deviation. Olsson et al. report
+      the induction phase change alongside a visible bump in the training loss,
+      so the absence of one is a result and needs a detector that could have
+      found it.
 
 The one number this module introduces that is not read from the construction is
 PREV_TOKEN_LEVEL. See its comment.
@@ -76,7 +91,7 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 from pathlib import Path
-from typing import Any, Optional, Sequence
+from typing import Any, Mapping, Optional, Sequence
 
 import numpy as np
 import torch
@@ -410,15 +425,25 @@ def attention_summary(
 # the OV circuit, from weights alone
 # ----------------------------------------------------------------------------
 
+def _f64(weight: torch.Tensor) -> np.ndarray:
+    """One weight tensor as a float64 numpy array, from any device.
+
+    The move and the cast are two calls in this order and not one. A single
+    `to()` naming both a destination device and float64 performs the cast on
+    the SOURCE device, and MPS raises rather than casting to a dtype it does
+    not have. Off the device first, then up to float64, works from every
+    device this lab runs on. tests/test_mps_regression.py holds the invariant.
+    """
+    return weight.detach().cpu().to(torch.float64).numpy()
+
+
 def _ov_parts(model: torch.nn.Module) -> tuple[np.ndarray, np.ndarray]:
     """(E, w_final) in float64 on the CPU.
 
     float64 because eigenvalues of a product of five matrices are not something
     to read in float32, and CPU because MPS has no float64 at all.
     """
-    embed = model.embed.weight.detach().to(device="cpu", dtype=torch.float64).numpy()
-    final = model.final_norm.weight.detach().to(device="cpu", dtype=torch.float64).numpy()
-    return embed, final
+    return _f64(model.embed.weight), _f64(model.final_norm.weight)
 
 
 def _head_slices(
@@ -435,8 +460,8 @@ def _head_slices(
     row vectors, which is the direction a token embedding actually travels.
     """
     lo, hi = head * head_dim, (head + 1) * head_dim
-    v = block.attn.v_proj.weight.detach().to(device="cpu", dtype=torch.float64).numpy()
-    o = block.attn.o_proj.weight.detach().to(device="cpu", dtype=torch.float64).numpy()
+    v = _f64(block.attn.v_proj.weight)
+    o = _f64(block.attn.o_proj.weight)
     return v[lo:hi, :].T, o[:, lo:hi].T
 
 
@@ -502,11 +527,7 @@ def ov_copying_score(model: torch.nn.Module) -> np.ndarray:
 
     out = np.empty((n_layers, n_heads), dtype=np.float64)
     for layer, block in enumerate(model.blocks):
-        w_attn = (
-            block.attn_norm.weight.detach()
-            .to(device="cpu", dtype=torch.float64)
-            .numpy()
-        )
+        w_attn = _f64(block.attn_norm.weight)
         core = final_gram * w_attn[None, :]  # diag(w_final) E^T E diag(w_attn)
         for head in range(n_heads):
             p, q = _head_slices(block, head, head_dim)
@@ -569,11 +590,7 @@ def ov_self_logit_rank(
 
     out = np.empty((n_layers, n_heads), dtype=np.float64)
     for layer, block in enumerate(model.blocks):
-        w_attn = (
-            block.attn_norm.weight.detach()
-            .to(device="cpu", dtype=torch.float64)
-            .numpy()
-        )
+        w_attn = _f64(block.attn_norm.weight)
         left_base = rows * w_attn[None, :]  # E_ids diag(w_attn), [n_ids, d]
         for head in range(n_heads):
             p, q = _head_slices(block, head, head_dim)
@@ -1306,6 +1323,343 @@ def head_churn(points: Sequence[EmergencePoint]) -> list[dict[str, Any]]:
             }
         )
     return churn
+
+
+ABRUPT = "ABRUPT"
+GRADUAL = "GRADUAL"
+INDETERMINATE = "INDETERMINATE AT THIS RESOLUTION"
+NO_CROSSING = "NO CROSSING"
+
+# The thresholds of the abruptness criterion, from the 2026-07-26 amendment to
+# docs/PROTOCOL.md, section 1. They are transcribed here because the
+# amendment is the only place they existed and a criterion no code can apply is
+# a criterion adjudicated by eye, which is what that amendment closes. Nothing
+# else in this module may compare against them.
+#
+#   ABRUPT                            G <= 3 and F <= 0.10
+#   GRADUAL                           G >= 7 or  F >= 0.30
+#   INDETERMINATE AT THIS RESOLUTION  anything else
+G_ABRUPT_MAX = 3
+F_ABRUPT_MAX = 0.10
+G_GRADUAL_MIN = 7
+F_GRADUAL_MIN = 0.30
+
+# The domain the comparator F is read on, named by the amendment: "the fraction
+# of the run's total FineWeb-Edu validation-loss improvement".
+ABRUPTNESS_LOSS_DOMAIN = "fineweb_edu"
+
+
+@dataclass(frozen=True)
+class Abruptness:
+    """The registered abruptness verdict and the three quantities behind it.
+
+    Amendment of 2026-07-26, section 1. The verdict is a function of G and F
+    alone. W is reported beside them and is not compared against anything, for
+    the reason the amendment gives: the grid is log spaced but not uniformly so,
+    adjacent points near 16M differ by a factor of 1.5 and adjacent points near
+    1.9B by a factor of 1.05, so a fixed threshold on a relative width is easier
+    to pass late in the run than early and would call a transition more abrupt
+    for having happened later.
+
+    resolution_limited is True when G == 1, that is when the crossing completed
+    inside a single grid interval. The amendment fixes what that means: W is an
+    upper bound rather than a measurement, ABRUPT is still reported if F allows,
+    because a transition that completes faster than the apparatus can see is not
+    less abrupt than one it can, and the width is never quoted as a figure.
+    """
+
+    verdict: str
+    grid_steps: Optional[int]
+    width_decades: Optional[float]
+    width_is_bound: bool
+    resolution_limited: bool
+    loss_fraction: Optional[float]
+    loss_domain: str
+    start_tokens: Optional[int]
+    end_tokens: Optional[int]
+    start_position: Optional[int]
+    end_position: Optional[int]
+    n_grid_points: int
+    first_tokens: Optional[int]
+    final_tokens: Optional[int]
+    start_loss: Optional[float]
+    end_loss: Optional[float]
+    first_loss: Optional[float]
+    final_loss: Optional[float]
+    interval_improvement: Optional[float]
+    total_improvement: Optional[float]
+    thresholds: dict[str, float]
+    note: str
+
+
+def abruptness_verdict(
+    max_scores: Mapping[int, float],
+    losses: Mapping[int, float],
+    loss_domain: str = ABRUPTNESS_LOSS_DOMAIN,
+) -> Abruptness:
+    """Apply the registered abruptness criterion to a measured trajectory.
+
+    max_scores maps a checkpoint's token count to its maximum prefix-matching
+    score across heads. losses maps a checkpoint's token count to that
+    checkpoint's validation loss on loss_domain. Both are keyed by the grid, and
+    the two key sets must agree: G counts positions in the grid and F is read at
+    four of those positions, so a loss curve measured on a different set of
+    checkpoints would silently change what G counts.
+
+    The crossing interval is interp.phase_change_interval's and is not
+    recomputed here, so the 0.1 and the 0.3 have one home. G is the difference
+    of the two bounds' positions in the grid, W is log10 of the token ratio, and
+    F is the share of the run's total loss improvement, first grid checkpoint to
+    final one, that falls inside the interval.
+
+    A trajectory with no crossing gets verdict NO CROSSING and every quantity
+    null. The criterion adjudicates the width of a crossing and there is no
+    width without one; returning ABRUPT or GRADUAL there would be answering a
+    question that was not asked.
+    """
+    grid = sorted(int(t) for t in max_scores)
+    loss_grid = sorted(int(t) for t in losses)
+    if grid != loss_grid:
+        raise ValueError(
+            "the score grid and the loss grid must be the same checkpoints: "
+            f"{len(grid)} scored and {len(loss_grid)} with a loss, "
+            f"{len(set(grid) ^ set(loss_grid))} not shared"
+        )
+    thresholds = {
+        "G_abrupt_max": float(G_ABRUPT_MAX),
+        "F_abrupt_max": float(F_ABRUPT_MAX),
+        "G_gradual_min": float(G_GRADUAL_MIN),
+        "F_gradual_min": float(F_GRADUAL_MIN),
+    }
+    interval = phase_change_interval({int(t): float(s) for t, s in max_scores.items()})
+    if not interval.crossed:
+        return Abruptness(
+            verdict=NO_CROSSING,
+            grid_steps=None,
+            width_decades=None,
+            width_is_bound=False,
+            resolution_limited=False,
+            loss_fraction=None,
+            loss_domain=loss_domain,
+            start_tokens=interval.start_tokens,
+            end_tokens=interval.end_tokens,
+            start_position=None,
+            end_position=None,
+            n_grid_points=len(grid),
+            first_tokens=grid[0] if grid else None,
+            final_tokens=grid[-1] if grid else None,
+            start_loss=None,
+            end_loss=None,
+            first_loss=None,
+            final_loss=None,
+            interval_improvement=None,
+            total_improvement=None,
+            thresholds=thresholds,
+            note=(
+                "no crossing interval, so there is no width to adjudicate: "
+                + interval.note
+            ),
+        )
+
+    start_tokens = int(interval.start_tokens)
+    end_tokens = int(interval.end_tokens)
+    start_position = grid.index(start_tokens)
+    end_position = grid.index(end_tokens)
+    grid_steps = end_position - start_position
+    width_decades = float(np.log10(end_tokens / start_tokens))
+
+    first_tokens, final_tokens = grid[0], grid[-1]
+    start_loss = float(losses[start_tokens])
+    end_loss = float(losses[end_tokens])
+    first_loss = float(losses[first_tokens])
+    final_loss = float(losses[final_tokens])
+    interval_improvement = start_loss - end_loss
+    total_improvement = first_loss - final_loss
+    if total_improvement <= 0.0:
+        return Abruptness(
+            verdict=INDETERMINATE,
+            grid_steps=grid_steps,
+            width_decades=width_decades,
+            width_is_bound=grid_steps == 1,
+            resolution_limited=grid_steps == 1,
+            loss_fraction=None,
+            loss_domain=loss_domain,
+            start_tokens=start_tokens,
+            end_tokens=end_tokens,
+            start_position=start_position,
+            end_position=end_position,
+            n_grid_points=len(grid),
+            first_tokens=first_tokens,
+            final_tokens=final_tokens,
+            start_loss=start_loss,
+            end_loss=end_loss,
+            first_loss=first_loss,
+            final_loss=final_loss,
+            interval_improvement=interval_improvement,
+            total_improvement=total_improvement,
+            thresholds=thresholds,
+            note=(
+                f"the {loss_domain} validation loss did not improve over the run "
+                f"({first_loss:.6f} at {first_tokens:,} tokens to {final_loss:.6f} "
+                f"at {final_tokens:,}), so F has no denominator and the "
+                "comparator cannot be formed. The verdict falls to the third "
+                "branch, which is what that branch is for."
+            ),
+        )
+
+    loss_fraction = interval_improvement / total_improvement
+    if grid_steps <= G_ABRUPT_MAX and loss_fraction <= F_ABRUPT_MAX:
+        verdict = ABRUPT
+    elif grid_steps >= G_GRADUAL_MIN or loss_fraction >= F_GRADUAL_MIN:
+        verdict = GRADUAL
+    else:
+        verdict = INDETERMINATE
+
+    resolution_limited = grid_steps == 1
+    note = (
+        f"G = {grid_steps} grid intervals, from position {start_position} "
+        f"({start_tokens:,} tokens) to position {end_position} "
+        f"({end_tokens:,}) of {len(grid)}. W = {width_decades:.4f} decades. "
+        f"F = {loss_fraction:.4f}, that is {interval_improvement:.6f} of "
+        f"{total_improvement:.6f} nats of {loss_domain} validation-loss "
+        f"improvement between {first_tokens:,} and {final_tokens:,} tokens."
+    )
+    if resolution_limited:
+        note += (
+            " The crossing completed inside a single grid interval, so W is an "
+            "upper bound on the width and not a measurement of it."
+        )
+    return Abruptness(
+        verdict=verdict,
+        grid_steps=grid_steps,
+        width_decades=width_decades,
+        width_is_bound=resolution_limited,
+        resolution_limited=resolution_limited,
+        loss_fraction=float(loss_fraction),
+        loss_domain=loss_domain,
+        start_tokens=start_tokens,
+        end_tokens=end_tokens,
+        start_position=start_position,
+        end_position=end_position,
+        n_grid_points=len(grid),
+        first_tokens=first_tokens,
+        final_tokens=final_tokens,
+        start_loss=start_loss,
+        end_loss=end_loss,
+        first_loss=first_loss,
+        final_loss=final_loss,
+        interval_improvement=float(interval_improvement),
+        total_improvement=float(total_improvement),
+        thresholds=thresholds,
+        note=note,
+    )
+
+
+# The multiple of the residual standard deviation a bump has to clear, and the
+# run length it has to clear it over, from the 2026-07-26 amendment section 4.
+BUMP_SIGMA = 3.0
+BUMP_RUN_LENGTH = 2
+
+
+@dataclass(frozen=True)
+class LossBump:
+    """The registered loss-bump detector on one domain's validation curve.
+
+    Amendment of 2026-07-26, section 4. A power law in tokens is fitted to the
+    domain's validation loss over the grid by least squares on log loss against
+    log tokens, and the bump statistic is the signed residual of the observed
+    loss from that fit, per checkpoint, in nats. A bump is a run of at least two
+    consecutive checkpoints whose residual is positive and exceeds three times
+    the residual standard deviation over the fitted window.
+
+    Residuals are in nats, not in log space, because the amendment says in nats
+    and loss is in nats: the fit is exponentiated back before differencing. The
+    standard deviation is the sample one, matching the amendment's other use of
+    the phrase, and ddof is recorded so the reading is not left to be inferred.
+
+    This exists because Olsson et al. report the induction phase change
+    alongside a visible bump in the training loss. A detector that finds no bump
+    is a result about this run and is reported as one.
+    """
+
+    domain: str
+    tokens: list[int]
+    loss: list[float]
+    fitted: list[float]
+    residual: list[float]
+    log_slope: float
+    log_intercept: float
+    residual_sd: float
+    ddof: int
+    threshold: float
+    bumps: list[dict[str, Any]]
+    n_points: int
+    note: str
+
+
+def loss_bump(
+    losses: Mapping[int, float], domain: str = ABRUPTNESS_LOSS_DOMAIN
+) -> LossBump:
+    """Fit the power law and find the runs that clear the registered bar."""
+    grid = sorted(int(t) for t in losses)
+    if len(grid) < 3:
+        raise ValueError(
+            f"{len(grid)} checkpoints on {domain!r}; a power-law fit and a "
+            "residual standard deviation need at least 3"
+        )
+    tokens = np.asarray(grid, dtype=np.float64)
+    observed = np.asarray([float(losses[t]) for t in grid], dtype=np.float64)
+    if np.any(observed <= 0.0):
+        raise ValueError(f"non-positive loss on {domain!r}; log loss is undefined")
+
+    slope, intercept = np.polyfit(np.log(tokens), np.log(observed), 1)
+    fitted = np.exp(intercept + slope * np.log(tokens))
+    residual = observed - fitted
+    sd = float(np.std(residual, ddof=1))
+    threshold = BUMP_SIGMA * sd
+
+    above = residual > threshold
+    bumps: list[dict[str, Any]] = []
+    start = None
+    for i, flag in enumerate(list(above) + [False]):
+        if flag and start is None:
+            start = i
+        elif not flag and start is not None:
+            if i - start >= BUMP_RUN_LENGTH:
+                span = slice(start, i)
+                peak = start + int(np.argmax(residual[span]))
+                bumps.append(
+                    {
+                        "start_tokens": grid[start],
+                        "end_tokens": grid[i - 1],
+                        "n_checkpoints": i - start,
+                        "peak_tokens": grid[peak],
+                        "peak_residual": float(residual[peak]),
+                    }
+                )
+            start = None
+
+    return LossBump(
+        domain=domain,
+        tokens=grid,
+        loss=[float(v) for v in observed],
+        fitted=[float(v) for v in fitted],
+        residual=[float(v) for v in residual],
+        log_slope=float(slope),
+        log_intercept=float(intercept),
+        residual_sd=sd,
+        ddof=1,
+        threshold=threshold,
+        bumps=bumps,
+        n_points=len(grid),
+        note=(
+            f"power law fitted over {len(grid)} grid points from {grid[0]:,} to "
+            f"{grid[-1]:,} tokens, log loss on log tokens, slope "
+            f"{float(slope):.6f}. Residual standard deviation {sd:.6f} nats, so "
+            f"the bar is {threshold:.6f} nats over at least {BUMP_RUN_LENGTH} "
+            f"consecutive checkpoints. {len(bumps)} run(s) clear it."
+        ),
+    )
 
 
 def trajectory_summary(

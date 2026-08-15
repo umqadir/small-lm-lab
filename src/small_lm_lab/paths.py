@@ -53,9 +53,10 @@ def portable_path(path: str | os.PathLike[str] | None) -> str | None:
     """Render a path with the bulk root replaced by its environment variable.
 
     A path under the bulk root becomes "$SMALL_LM_LAB_BULK_ROOT/checkpoints/..."
-    so that a recorded path identifies the artifact rather than the machine.
-    Anything outside the bulk root is returned unchanged. None passes through,
-    since metadata fields use it to mean "no checkpoint".
+    so that a recorded path identifies the artifact rather than the machine. A
+    path inside the repository becomes repository-relative; anything outside
+    both roots is returned unchanged. None passes through, since metadata fields
+    use it to mean "no checkpoint".
     """
     if path is None:
         return None

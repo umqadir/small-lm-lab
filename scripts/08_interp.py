@@ -86,6 +86,7 @@ from small_lm_lab.config import get_config, n_params
 from small_lm_lab.data import DEFAULT_TOKENIZED_ROOT
 from small_lm_lab import evaluate
 from small_lm_lab.evaluate import DOMAINS
+from small_lm_lab.paths import portable_path
 from small_lm_lab.train import CHECKPOINT_PREFIX
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
@@ -157,6 +158,19 @@ def to_jsonable(obj: Any) -> Any:
         return None
     if isinstance(obj, Path):
         return str(obj)
+    return obj
+
+
+def portable_output_paths(obj: Any) -> Any:
+    """Replace absolute artifact paths recursively before JSON serialization."""
+    if isinstance(obj, dict):
+        return {key: portable_output_paths(value) for key, value in obj.items()}
+    if isinstance(obj, list):
+        return [portable_output_paths(value) for value in obj]
+    if isinstance(obj, tuple):
+        return [portable_output_paths(value) for value in obj]
+    if isinstance(obj, str) and Path(obj).is_absolute():
+        return portable_path(obj)
     return obj
 
 
@@ -863,6 +877,7 @@ def main() -> None:
             if want_patching:
                 results["patching_by_checkpoint"] = patching_by_ckpt
 
+    results = portable_output_paths(results)
     args.out.parent.mkdir(parents=True, exist_ok=True)
     with args.out.open("w") as f:
         json.dump(results, f, indent=2, sort_keys=False)

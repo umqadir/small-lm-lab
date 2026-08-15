@@ -4,256 +4,256 @@
     "n_params": 34087424,
     "checkpoint_dir": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1",
     "trajectory": "analysis/emergence/final/stage_a_trajectory_n256.json",
-    "device": "mps",
+    "device": "cuda",
     "n_band_seeds": 10,
     "n_band_checkpoints": 4,
     "n_sequences_per_reading": 256,
-    "timestamp": "2026-08-15T00:34:44.888613+00:00"
+    "timestamp": "2026-08-15T01:37:15.743952+00:00"
   },
   "band": {
-    "mu": 0.00836988439855304,
-    "sigma": 0.0021766246748832372,
-    "upper": 0.014899758423202753,
+    "mu": 0.008369884433159313,
+    "sigma": 0.0021766247392592795,
+    "upper": 0.014899758650937152,
     "readings": [
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 0,
-        "max_prefix_matching": 0.00624521694953728
+        "max_prefix_matching": 0.006245216867682757
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 1,
-        "max_prefix_matching": 0.006261013571929652
+        "max_prefix_matching": 0.006261013475523214
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 2,
-        "max_prefix_matching": 0.0062657904763909755
+        "max_prefix_matching": 0.006265790409088368
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 3,
-        "max_prefix_matching": 0.006264024939810042
+        "max_prefix_matching": 0.0062640248597745085
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 4,
-        "max_prefix_matching": 0.006256790682527935
+        "max_prefix_matching": 0.0062567905624746345
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 5,
-        "max_prefix_matching": 0.006263961602599011
+        "max_prefix_matching": 0.006263961508011562
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 6,
-        "max_prefix_matching": 0.006240404913114617
+        "max_prefix_matching": 0.006240404853087966
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 7,
-        "max_prefix_matching": 0.00624254153444781
+        "max_prefix_matching": 0.006242541447136318
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 8,
-        "max_prefix_matching": 0.006265115942369448
+        "max_prefix_matching": 0.0062651158496009884
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
         "tokens": 1015808,
         "sequence_seed": 9,
-        "max_prefix_matching": 0.006253657804336399
+        "max_prefix_matching": 0.0062536577352148015
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 0,
-        "max_prefix_matching": 0.009625062566556153
+        "max_prefix_matching": 0.009625062763007008
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 1,
-        "max_prefix_matching": 0.00961463540988916
+        "max_prefix_matching": 0.009614635437174002
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 2,
-        "max_prefix_matching": 0.00967712828241929
+        "max_prefix_matching": 0.00967712836973078
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 3,
-        "max_prefix_matching": 0.00976425743647269
+        "max_prefix_matching": 0.009764257538336096
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 4,
-        "max_prefix_matching": 0.009704658807095257
+        "max_prefix_matching": 0.009704658865302918
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 5,
-        "max_prefix_matching": 0.009733609722388792
+        "max_prefix_matching": 0.00973360969874193
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 6,
-        "max_prefix_matching": 0.009697782938019373
+        "max_prefix_matching": 0.009697783054434694
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 7,
-        "max_prefix_matching": 0.009683624544777558
+        "max_prefix_matching": 0.009683624681201763
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 8,
-        "max_prefix_matching": 0.009766523518919712
+        "max_prefix_matching": 0.009766523558937479
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
         "tokens": 2015232,
         "sequence_seed": 9,
-        "max_prefix_matching": 0.009687625059086713
+        "max_prefix_matching": 0.00968762521915778
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 0,
-        "max_prefix_matching": 0.006281498168391408
+        "max_prefix_matching": 0.0062814982229610905
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 1,
-        "max_prefix_matching": 0.006319695605270681
+        "max_prefix_matching": 0.006319695625279564
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 2,
-        "max_prefix_matching": 0.006355401224936941
+        "max_prefix_matching": 0.006355401261316729
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 3,
-        "max_prefix_matching": 0.006369046563122538
+        "max_prefix_matching": 0.006369046615873231
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 4,
-        "max_prefix_matching": 0.00630131005164003
+        "max_prefix_matching": 0.006301310033450136
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 5,
-        "max_prefix_matching": 0.006362981170241255
+        "max_prefix_matching": 0.006362981173879234
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 6,
-        "max_prefix_matching": 0.006343086088236305
+        "max_prefix_matching": 0.006343086131892051
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 7,
-        "max_prefix_matching": 0.00631944574888621
+        "max_prefix_matching": 0.006319445797998924
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 8,
-        "max_prefix_matching": 0.0062786401558696525
+        "max_prefix_matching": 0.006278640159507631
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
         "tokens": 4014080,
         "sequence_seed": 9,
-        "max_prefix_matching": 0.00628700715242303
+        "max_prefix_matching": 0.006287007176069892
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 0,
-        "max_prefix_matching": 0.011265267688941094
+        "max_prefix_matching": 0.011265267901762854
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 1,
-        "max_prefix_matching": 0.011087687988037942
+        "max_prefix_matching": 0.011087688180850819
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 2,
-        "max_prefix_matching": 0.011249808838329045
+        "max_prefix_matching": 0.011249808949287399
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 3,
-        "max_prefix_matching": 0.011176749985679635
+        "max_prefix_matching": 0.011176750056620222
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 4,
-        "max_prefix_matching": 0.011250205605392694
+        "max_prefix_matching": 0.011250205623582588
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 5,
-        "max_prefix_matching": 0.011218089412068366
+        "max_prefix_matching": 0.01121808949392289
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 6,
-        "max_prefix_matching": 0.011197841615285142
+        "max_prefix_matching": 0.011197841789908125
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 7,
-        "max_prefix_matching": 0.011185547522472916
+        "max_prefix_matching": 0.011185547595232492
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 8,
-        "max_prefix_matching": 0.011366599039320135
+        "max_prefix_matching": 0.011366599188477267
       },
       {
         "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
         "tokens": 8011776,
         "sequence_seed": 9,
-        "max_prefix_matching": 0.011066039614888723
+        "max_prefix_matching": 0.01106603959487984
       }
     ]
   },

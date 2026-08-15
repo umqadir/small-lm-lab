@@ -1464,6 +1464,18 @@ def test_to_jsonable_maps_non_finite_floats_to_null() -> None:
     assert strict_loads(json.dumps(doc)) == doc
 
 
+def test_portable_output_paths_rewrites_only_absolute_paths() -> None:
+    script = load_interp_script()
+    absolute = REPO_ROOT / "analysis" / "causal.json"
+    doc = script.portable_output_paths(
+        {"checkpoint": str(absolute), "note": "a result, not a path"}
+    )
+    assert doc == {
+        "checkpoint": "analysis/causal.json",
+        "note": "a result, not a path",
+    }
+
+
 def test_every_fraction_status_serializes_as_a_null_and_a_reason() -> None:
     """All four statuses, including the ones a random-init model never reaches.
 

@@ -1,0 +1,113 @@
+{
+  "metadata": {
+    "registered_controls": "docs/PROTOCOL.md amendment 2026-07-26 section 10",
+    "timestamp": "2026-08-15T02:06:45.398132+00:00"
+  },
+  "runs": {
+    "headline": {
+      "path": "analysis/emergence/final/stage_a_trajectory_n256.json",
+      "config": "size30m",
+      "n_params": 34087424,
+      "n_sequences": 256,
+      "final_tokens": 2000011264,
+      "final_max_prefix_matching": 0.5333235207945108,
+      "final_induction_heads": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "phase_change": {
+        "crossed": true,
+        "start_tokens": 24002560,
+        "end_tokens": 48005120,
+        "start_score": 0.009998152703701635,
+        "end_score": 0.4918026141822338,
+        "width_tokens": 24002560,
+        "note": "the max prefix-matching score goes from 0.0100 at 24,002,560 tokens to 0.4918 at 48,005,120 tokens"
+      }
+    },
+    "replication_seed2": {
+      "path": "analysis/emergence/final/replication_seed2_trajectory_n256.json",
+      "config": "size30m",
+      "n_params": 34087424,
+      "n_sequences": 256,
+      "final_tokens": 64012288,
+      "final_max_prefix_matching": 0.3434024070156738,
+      "final_induction_heads": [
+        [
+          5,
+          5
+        ],
+        [
+          5,
+          7
+        ]
+      ],
+      "phase_change": {
+        "crossed": true,
+        "start_tokens": 24002560,
+        "end_tokens": 64012288,
+        "start_score": 0.03711603432020638,
+        "end_score": 0.3434024070156738,
+        "width_tokens": 40009728,
+        "note": "the max prefix-matching score goes from 0.0371 at 24,002,560 tokens to 0.3434 at 64,012,288 tokens"
+      }
+    },
+    "depth1": {
+      "path": "analysis/emergence/final/control_depth1_trajectory_n256.json",
+      "config": "control_depth1",
+      "n_params": 11601408,
+      "n_sequences": 256,
+      "final_tokens": 64012288,
+      "final_max_prefix_matching": 0.002916546656706487,
+      "final_induction_heads": [],
+      "phase_change": {
+        "crossed": false,
+        "start_tokens": null,
+        "end_tokens": null,
+        "start_score": null,
+        "end_score": null,
+        "width_tokens": null,
+        "note": "the max prefix-matching score never exceeds 0.3; it peaks at 0.0064. No phase change to report."
+      }
+    },
+    "attention_only_2layer": {
+      "path": "analysis/emergence/final/control_attn2_trajectory_n256.json",
+      "config": "control_attn2",
+      "n_params": 10487296,
+      "n_sequences": 256,
+      "final_tokens": 64012288,
+      "final_max_prefix_matching": 0.0030541964133590227,
+      "final_induction_heads": [],
+      "phase_change": {
+        "crossed": false,
+        "start_tokens": null,
+        "end_tokens": null,
+        "start_score": null,
+        "end_score": null,
+        "width_tokens": null,
+        "note": "the max prefix-matching score never exceeds 0.3; it peaks at 0.0132. No phase change to report."
+      }
+    }
+  },
+  "replication": {
+    "verdict": "replicated_within_2x",
+    "headline_end_tokens": 48005120,
+    "replication_end_tokens": 64012288,
+    "crossing_ratio": 1.3334470989761091,
+    "registered_uncertainty_threshold": 2.0
+  }
+}

@@ -23,7 +23,10 @@ from small_lm_lab.paths import portable_path
 
 ORDER = 5
 CONTEXT_LEN = 512
-PRUNING = [0, 0, 1, 1, 1]
+# The protocol fixed order, smoothing, corpus and statistic but not pruning.
+# These thresholds make the full-corpus KenLM build storage-feasible and are
+# recorded in every result artifact.
+PRUNING = [0, 1, 1, 2, 2]
 
 
 def parse_model(value: str) -> tuple[str, Path]:

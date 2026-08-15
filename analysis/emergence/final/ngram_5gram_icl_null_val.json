@@ -1,0 +1,60 @@
+{
+  "metadata": {
+    "order": 5,
+    "smoothing": "interpolated modified Kneser-Ney (KenLM)",
+    "pruning": [
+      0,
+      1,
+      1,
+      2,
+      2
+    ],
+    "training": "one model per domain, complete train split",
+    "model_paths": {
+      "tinystories": "$SMALL_LM_LAB_BULK_ROOT/ngram-local/tinystories_5gram.klm",
+      "fineweb_edu": "$SMALL_LM_LAB_BULK_ROOT/ngram-local/fineweb_edu_5gram.klm"
+    },
+    "split": "val",
+    "context_len": 512,
+    "icl_windows": {
+      "early": [
+        50,
+        100
+      ],
+      "late": [
+        450,
+        500
+      ]
+    },
+    "eot_state_reset": true,
+    "n_resamples": 1000,
+    "seed": 1,
+    "timestamp": "2026-08-15T05:23:14.883672+00:00"
+  },
+  "domains": {
+    "tinystories": {
+      "domain": "tinystories",
+      "split": "val",
+      "icl_score": 0.013445732427955104,
+      "ci_low": -0.005866783787474994,
+      "ci_high": 0.030264001304403165,
+      "n_windows": 9827,
+      "mean_early_loss": 2.355966284682073,
+      "mean_late_loss": 2.369412017110028,
+      "max_windows": null,
+      "windows_capped": false
+    },
+    "fineweb_edu": {
+      "domain": "fineweb_edu",
+      "split": "val",
+      "icl_score": -0.0012220570481309423,
+      "ci_low": -0.018642100794739956,
+      "ci_high": 0.01696741004472717,
+      "n_windows": 9801,
+      "mean_early_loss": 4.237184571383309,
+      "mean_late_loss": 4.235962514335178,
+      "max_windows": null,
+      "windows_capped": false
+    }
+  }
+}

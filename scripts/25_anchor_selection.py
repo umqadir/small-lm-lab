@@ -19,6 +19,7 @@ import numpy as np
 
 from small_lm_lab import interp
 from small_lm_lab.config import get_config, n_params
+from small_lm_lab.paths import portable_path
 
 REPO_ROOT = Path(__file__).resolve().parents[1]
 INTERP_SCRIPT = REPO_ROOT / "scripts" / "08_interp.py"
@@ -136,7 +137,7 @@ def main() -> None:
             )
             readings.append(
                 {
-                    "checkpoint": str(path),
+                    "checkpoint": portable_path(path),
                     "tokens": int(token_count),
                     "sequence_seed": seed,
                     "max_prefix_matching": float(per_sequence.mean(axis=0).max()),
@@ -164,8 +165,8 @@ def main() -> None:
         "metadata": {
             "config": args.config,
             "n_params": n_params(config),
-            "checkpoint_dir": str(args.checkpoint_dir),
-            "trajectory": str(args.trajectory),
+            "checkpoint_dir": portable_path(args.checkpoint_dir),
+            "trajectory": portable_path(args.trajectory),
             "device": args.device,
             "n_band_seeds": N_BAND_SEEDS,
             "n_band_checkpoints": N_BAND_CHECKPOINTS,

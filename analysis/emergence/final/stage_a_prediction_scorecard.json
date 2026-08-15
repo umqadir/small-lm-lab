@@ -1,0 +1,230 @@
+{
+  "metadata": {
+    "trajectory": "analysis/emergence/final/stage_a_trajectory_n256.json",
+    "control": "analysis/emergence/final/random_init_control_n256.json",
+    "grid": "configs/stage_a_checkpoints.json",
+    "trajectory_timestamp": "2026-08-15T00:12:15.724047+00:00",
+    "n_sequences_used": 256,
+    "at_registered_n_sequences": true,
+    "reading_status": "registered",
+    "predictions": "docs/PROTOCOL.md",
+    "timestamp": "2026-08-15T00:37:49.246102+00:00"
+  },
+  "n_held": 6,
+  "n_failed": 2,
+  "n_not_scored": 0,
+  "predictions": [
+    {
+      "id": "P1",
+      "primary": true,
+      "statement": "the phase-change interval closes at or below 200,000,000 tokens",
+      "criterion": "fails if phase_change.interval.end_tokens exceeds 200,000,000, and outright if crossed is false at 2e9",
+      "crossed": true,
+      "end_tokens": 48005120,
+      "end_grid_target": 48000000,
+      "deadline_tokens": 200000000,
+      "point_prediction_tokens": 48000000,
+      "point_prediction_hit": true,
+      "verdict": "held"
+    },
+    {
+      "id": "P2",
+      "primary": false,
+      "statement": "at least one head is above the registered 0.2 at the final checkpoint",
+      "criterion": "fails if induction_heads is empty at the final checkpoint",
+      "final_tokens": 2000011264,
+      "induction_heads": [
+        [
+          4,
+          4
+        ],
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          1
+        ],
+        [
+          6,
+          0
+        ]
+      ],
+      "n_induction_heads": 4,
+      "layers_occupied": [
+        4,
+        5,
+        6
+      ],
+      "point_prediction": "between 1 and 4 heads, in layers 2 through 6",
+      "point_prediction_hit": true,
+      "verdict": "held"
+    },
+    {
+      "id": "P3",
+      "primary": false,
+      "statement": "at most 3 grid checkpoints lie strictly inside the crossing",
+      "criterion": "fails if more than 3 intervening grid points",
+      "n_grid_points_between": 1,
+      "max_allowed": 3,
+      "verdict": "held"
+    },
+    {
+      "id": "P4",
+      "primary": false,
+      "statement": "a previous-token head is already above the level at the last checkpoint whose max prefix-matching score is still below 0.1",
+      "criterion": "fails if no head exceeds the previous-token level at or before that checkpoint",
+      "prev_token_level": 0.3,
+      "anchor_tokens": 24002560,
+      "anchor_max_prefix_matching": 0.009998152703701635,
+      "anchor_max_prev_token": 0.6228205075021833,
+      "anchor_max_prev_token_head": [
+        7,
+        5
+      ],
+      "first_prev_token_above_tokens": 4014080,
+      "verdict": "held"
+    },
+    {
+      "id": "P5",
+      "primary": false,
+      "statement": "the in-context learning score on fineweb_edu falls by at least 0.05 nats across the crossing, and its steepest step lands within one grid step of the crossing",
+      "criterion": "fails if the drop over the interval is under 0.05 nats, or if the steepest step lands more than one grid point away",
+      "domain": "fineweb_edu",
+      "icl_at_start": -0.13277938961982727,
+      "icl_at_end": -0.1735960617661476,
+      "drop_over_interval": -0.04081667214632034,
+      "min_drop_required": -0.05,
+      "drop_clause_holds": false,
+      "steepest_step": {
+        "from_tokens": 250003456,
+        "to_tokens": 300007424,
+        "from_score": -0.06215604394674301,
+        "to_score": -0.13213007897138596,
+        "delta": -0.06997403502464294
+      },
+      "steepest_step_grid_distance": 6,
+      "locality_clause_holds": false,
+      "verdict": "failed"
+    },
+    {
+      "id": "P6",
+      "primary": false,
+      "statement": "copying exact-match accuracy clears chance, lower bound above chance, at or below 200,000,000 tokens",
+      "criterion": "fails if the copying interval has not cleared chance by 200M tokens",
+      "first_copying_above_chance_tokens": 2015232,
+      "first_copying_above_chance_grid_target": 2000000,
+      "exact_match_there": 0.00015378937007874016,
+      "exact_match_ci_there": [
+        6.151574803149606e-05,
+        0.0002768208661417323
+      ],
+      "chance": 6.103888176768602e-05,
+      "deadline_tokens": 200000000,
+      "verdict": "held"
+    },
+    {
+      "crossing_tokens": 48005120,
+      "primary_head": [
+        4,
+        7
+      ],
+      "primary_head_prefix_matching": 0.4918026141822338,
+      "primary_head_ov_copying_score_at_crossing": -0.048545686138001004,
+      "primary_head_ov_copying_score_one_grid_step_earlier": 0.3378878867036444,
+      "primary_head_ov_history_to_crossing": [
+        {
+          "tokens": 1015808,
+          "ov_copying_score": 0.034592890095765445,
+          "prefix_matching": 0.004667827101002331
+        },
+        {
+          "tokens": 2015232,
+          "ov_copying_score": -0.23139581555863187,
+          "prefix_matching": 0.009614635437174002
+        },
+        {
+          "tokens": 4014080,
+          "ov_copying_score": -0.13686813268822612,
+          "prefix_matching": 0.006319695625279564
+        },
+        {
+          "tokens": 8011776,
+          "ov_copying_score": 0.5963273976136734,
+          "prefix_matching": 0.0017889781438498176
+        },
+        {
+          "tokens": 16007168,
+          "ov_copying_score": 0.4233935446920622,
+          "prefix_matching": 0.0049942086880037095
+        },
+        {
+          "tokens": 24002560,
+          "ov_copying_score": 0.4255434420640312,
+          "prefix_matching": 0.007870198820455698
+        },
+        {
+          "tokens": 32014336,
+          "ov_copying_score": 0.3378878867036444,
+          "prefix_matching": 0.1279452749004122
+        },
+        {
+          "tokens": 48005120,
+          "ov_copying_score": -0.048545686138001004,
+          "prefix_matching": 0.4918026141822338
+        }
+      ],
+      "heads_above_the_high_bound_at_crossing": [
+        [
+          4,
+          7
+        ],
+        [
+          5,
+          1
+        ]
+      ],
+      "their_prefix_matching": [
+        0.4918026141822338,
+        0.3434373941272497
+      ],
+      "their_ov_copying_score": [
+        -0.048545686138001004,
+        -0.3813485905474404
+      ],
+      "holds_for_any_crossing_head": false,
+      "ov_level": 0.5,
+      "verdict": "failed",
+      "reading": "the OV score is read at the crossing checkpoint and at the one grid step before it, which is what 'the checkpoint at or before its own crossing' designates. The whole history to the crossing is carried so the alternative reading is checkable.",
+      "alternative_reading_any_earlier_checkpoint": {
+        "holds": true,
+        "first_tokens_above_level": 8011776,
+        "note": "true if the score exceeded the level at ANY earlier checkpoint. Reported and not adopted: before the transition this score wanders over most of its range at every head, so a transient early excursion is not the OV circuit having turned copying, and a verdict read off one would be unfalsifiable."
+      },
+      "id": "P7",
+      "primary": false,
+      "statement": "the head that first crosses prefix-matching 0.3 already has an OV copying score above 0.5 at or before its own crossing",
+      "criterion": "fails if the copying score crosses 0.5 strictly after the prefix-matching crossing for that head"
+    },
+    {
+      "id": "P8",
+      "primary": false,
+      "statement": "a random-init model shows none of this",
+      "criterion": "fails if max prefix-matching reaches 0.05, or any head reaches the registered 0.2, or the copying interval clears chance",
+      "init_seed": 0,
+      "n_sequences_used": 256,
+      "max_prefix_matching": 0.005540651558476384,
+      "prefix_matching_chance": 0.005411745041166203,
+      "n_induction_heads": 0,
+      "copying_exact_match": 3.075787401574803e-05,
+      "copying_ci": [
+        0.0,
+        7.689468503937008e-05
+      ],
+      "copying_chance": 6.103888176768602e-05,
+      "copying_clears_chance": false,
+      "verdict": "held"
+    }
+  ]
+}

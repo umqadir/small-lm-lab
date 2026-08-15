@@ -1,0 +1,145 @@
+{
+  "metadata": {
+    "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_002000011264.pt",
+    "random_init": false,
+    "config": "size30m",
+    "n_params": 34087424,
+    "tokens": 2000011264,
+    "device": "cuda",
+    "seed": 1,
+    "split": "val",
+    "suite": "all",
+    "n_resamples": 1000,
+    "batch_size": 16,
+    "tokenized_root": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized",
+    "timestamp": "2026-08-15T00:26:46.866667+00:00",
+    "torch_version": "2.13.0+cu130"
+  },
+  "perplexity": {
+    "tinystories": {
+      "domain": "tinystories",
+      "split": "val",
+      "perplexity": 3.790529529159988,
+      "ci_low": 3.7742728225132516,
+      "ci_high": 3.8064208251579594,
+      "n_windows": 9827,
+      "n_tokens": 5031424
+    },
+    "fineweb_edu": {
+      "domain": "fineweb_edu",
+      "split": "val",
+      "perplexity": 52.28922513324348,
+      "ci_low": 51.94452719304739,
+      "ci_high": 52.65799683357519,
+      "n_windows": 9801,
+      "n_tokens": 5018112
+    }
+  },
+  "blimp": {
+    "anaphor_number_agreement": {
+      "paradigm": "anaphor_number_agreement",
+      "accuracy": 0.946,
+      "ci_low": 0.932,
+      "ci_high": 0.96,
+      "n_items": 1000
+    },
+    "anaphor_gender_agreement": {
+      "paradigm": "anaphor_gender_agreement",
+      "accuracy": 0.776,
+      "ci_low": 0.751,
+      "ci_high": 0.801,
+      "n_items": 1000
+    },
+    "determiner_noun_agreement_1": {
+      "paradigm": "determiner_noun_agreement_1",
+      "accuracy": 0.895,
+      "ci_low": 0.875,
+      "ci_high": 0.915,
+      "n_items": 1000
+    },
+    "determiner_noun_agreement_2": {
+      "paradigm": "determiner_noun_agreement_2",
+      "accuracy": 0.886,
+      "ci_low": 0.8639749999999999,
+      "ci_high": 0.905,
+      "n_items": 1000
+    },
+    "regular_plural_subject_verb_agreement_1": {
+      "paradigm": "regular_plural_subject_verb_agreement_1",
+      "accuracy": 0.828,
+      "ci_low": 0.804975,
+      "ci_high": 0.85,
+      "n_items": 1000
+    },
+    "irregular_plural_subject_verb_agreement_1": {
+      "paradigm": "irregular_plural_subject_verb_agreement_1",
+      "accuracy": 0.838,
+      "ci_low": 0.814,
+      "ci_high": 0.86,
+      "n_items": 1000
+    },
+    "irregular_past_participle_verbs": {
+      "paradigm": "irregular_past_participle_verbs",
+      "accuracy": 0.856,
+      "ci_low": 0.834,
+      "ci_high": 0.878,
+      "n_items": 1000
+    },
+    "animate_subject_trans": {
+      "paradigm": "animate_subject_trans",
+      "accuracy": 0.757,
+      "ci_low": 0.731,
+      "ci_high": 0.783,
+      "n_items": 1000
+    },
+    "npi_present_1": {
+      "paradigm": "npi_present_1",
+      "accuracy": 0.475,
+      "ci_low": 0.447,
+      "ci_high": 0.504025,
+      "n_items": 1000
+    },
+    "wh_questions_object_gap": {
+      "paradigm": "wh_questions_object_gap",
+      "accuracy": 0.764,
+      "ci_low": 0.737,
+      "ci_high": 0.79,
+      "n_items": 1000
+    }
+  },
+  "icl": {
+    "tinystories": {
+      "domain": "tinystories",
+      "split": "val",
+      "icl_score": -0.06912658335149158,
+      "ci_low": -0.08211364163861237,
+      "ci_high": -0.056943517648213385,
+      "n_windows": 9827,
+      "mean_early_loss": 1.3427482210323358,
+      "mean_late_loss": 1.2736216376808442
+    },
+    "fineweb_edu": {
+      "domain": "fineweb_edu",
+      "split": "val",
+      "icl_score": -0.17053548627551196,
+      "ci_low": -0.18545103805163754,
+      "ci_high": -0.15439152173677412,
+      "n_windows": 9801,
+      "mean_early_loss": 4.033283129521456,
+      "mean_late_loss": 3.8627476432459438
+    }
+  },
+  "copying": {
+    "loss_delta": -3.8464211728423834,
+    "loss_delta_ci_low": -3.9154539122479037,
+    "loss_delta_ci_high": -3.7778232303913684,
+    "exact_match": 0.11726439468503937,
+    "exact_match_ci_low": 0.11238850270669291,
+    "exact_match_ci_high": 0.12237135519192913,
+    "n_sequences": 512,
+    "repeat_len": 128,
+    "seed": 1,
+    "mean_first_copy_loss": 11.700065657496452,
+    "mean_second_copy_loss": 7.853644484654069
+  }
+}

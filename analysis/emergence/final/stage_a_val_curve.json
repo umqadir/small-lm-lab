@@ -1,0 +1,1044 @@
+{
+  "metadata": {
+    "checkpoint_dir": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1",
+    "n_checkpoints": 34,
+    "config": "size30m",
+    "n_params": 34087424,
+    "device": "cuda",
+    "split": "val",
+    "domains": [
+      "tinystories",
+      "fineweb_edu"
+    ],
+    "batch_size": 32,
+    "max_windows": 2048,
+    "n_resamples": 1000,
+    "seed": 1,
+    "context_len": 512,
+    "tokenized_root": "$SMALL_LM_LAB_BULK_ROOT/data/tokenized",
+    "timestamp": "2026-08-15T00:26:34.709069+00:00",
+    "statistic": "token-weighted mean negative log likelihood over the first max_windows non-overlapping windows of the split, and its exponential. Per domain, never pooled. The same windows in the same order at every checkpoint."
+  },
+  "points": [
+    {
+      "tokens": 1015808,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000001015808.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 4.622791874920949,
+          "perplexity": 101.7777866917852,
+          "perplexity_ci_low": 100.54406697826954,
+          "perplexity_ci_high": 103.10564474694803,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 7.4046297068707645,
+          "perplexity": 1643.5761184378791,
+          "perplexity_ci_low": 1623.9071992479508,
+          "perplexity_ci_high": 1664.4930136174905,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 2015232,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000002015232.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 3.5168064716272056,
+          "perplexity": 33.67670902707957,
+          "perplexity_ci_low": 33.22953780878583,
+          "perplexity_ci_high": 34.14860286288848,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 6.689770838012919,
+          "perplexity": 804.1379531763922,
+          "perplexity_ci_low": 793.6145478955561,
+          "perplexity_ci_high": 815.3611103032179,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 4014080,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000004014080.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 2.799355049675796,
+          "perplexity": 16.43404421026066,
+          "perplexity_ci_low": 16.214427715605694,
+          "perplexity_ci_high": 16.66881707063476,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 6.296645040391013,
+          "perplexity": 542.7479547224538,
+          "perplexity_ci_low": 535.5156954465854,
+          "perplexity_ci_high": 550.4425016805835,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 8011776,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000008011776.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 2.333244680776261,
+          "perplexity": 10.311344333762674,
+          "perplexity_ci_low": 10.180202903790446,
+          "perplexity_ci_high": 10.454138171512593,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 5.807193138403818,
+          "perplexity": 332.6840159386992,
+          "perplexity_ci_low": 328.1341795218634,
+          "perplexity_ci_high": 337.2526567629905,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 16007168,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000016007168.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 2.0124831467401236,
+          "perplexity": 7.481872887991382,
+          "perplexity_ci_low": 7.392003463161272,
+          "perplexity_ci_high": 7.577241710960789,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 5.363960933405906,
+          "perplexity": 213.56920672176688,
+          "perplexity_ci_low": 210.609408671568,
+          "perplexity_ci_high": 216.69758557461327,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 24002560,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000024002560.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.8762824293226004,
+          "perplexity": 6.529186974421292,
+          "perplexity_ci_low": 6.452233583474092,
+          "perplexity_ci_high": 6.606521868691639,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 5.095360447652638,
+          "perplexity": 163.26268167028442,
+          "perplexity_ci_low": 160.89190673068515,
+          "perplexity_ci_high": 165.6143454004318,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 32014336,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000032014336.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.7900856034830213,
+          "perplexity": 5.989965206321475,
+          "perplexity_ci_low": 5.924397560796042,
+          "perplexity_ci_high": 6.0585805759427735,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.8765436607645825,
+          "perplexity": 131.17648900103623,
+          "perplexity_ci_low": 129.25644359528016,
+          "perplexity_ci_high": 133.05377445033872,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 48005120,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000048005120.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.6856527983909473,
+          "perplexity": 5.395972264876462,
+          "perplexity_ci_low": 5.338259442533273,
+          "perplexity_ci_high": 5.456227644845345,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.630566894542426,
+          "perplexity": 102.57219524951553,
+          "perplexity_ci_low": 101.05117164202744,
+          "perplexity_ci_high": 104.0576140801598,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 64012288,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000064012288.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.623893974116072,
+          "perplexity": 5.072805279328545,
+          "perplexity_ci_low": 5.021341539333563,
+          "perplexity_ci_high": 5.127416882418273,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.509992529521696,
+          "perplexity": 90.92113928359412,
+          "perplexity_ci_low": 89.56386200296157,
+          "perplexity_ci_high": 92.25718375376702,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 96010240,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000096010240.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.5492382259690203,
+          "perplexity": 4.707882473643157,
+          "perplexity_ci_low": 4.659075670742872,
+          "perplexity_ci_high": 4.759219252825763,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.380971954320557,
+          "perplexity": 79.91567005012178,
+          "perplexity_ci_low": 78.67098482519579,
+          "perplexity_ci_high": 81.12352742580465,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 128008192,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000128008192.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.507285317959031,
+          "perplexity": 4.51445882430744,
+          "perplexity_ci_low": 4.470207708521327,
+          "perplexity_ci_high": 4.560610040574733,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.293886486091651,
+          "perplexity": 73.25060345023091,
+          "perplexity_ci_low": 72.09632248533546,
+          "perplexity_ci_high": 74.35893424022241,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 160006144,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000160006144.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.4800833511981182,
+          "perplexity": 4.393311853464778,
+          "perplexity_ci_low": 4.350354763187307,
+          "perplexity_ci_high": 4.438803810988217,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.255680586327799,
+          "perplexity": 70.50478545633328,
+          "perplexity_ci_low": 69.42746206665211,
+          "perplexity_ci_high": 71.58968552749879,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 200015872,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000200015872.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.4566684524470475,
+          "perplexity": 4.291637889272808,
+          "perplexity_ci_low": 4.249879910958141,
+          "perplexity_ci_high": 4.335357419685099,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.204501113039441,
+          "perplexity": 66.9871703029713,
+          "perplexity_ci_low": 65.92602511626717,
+          "perplexity_ci_high": 67.98338008156487,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 250003456,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000250003456.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.4359277434414253,
+          "perplexity": 4.2035430097939885,
+          "perplexity_ci_low": 4.162983363787564,
+          "perplexity_ci_high": 4.246683157000711,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.16606630384922,
+          "perplexity": 64.46138122899397,
+          "perplexity_ci_low": 63.46416365175143,
+          "perplexity_ci_high": 65.4600517350464,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 300007424,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000300007424.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.4215590995154344,
+          "perplexity": 4.14357565357746,
+          "perplexity_ci_low": 4.103877173354984,
+          "perplexity_ci_high": 4.187102909276402,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.139439849182963,
+          "perplexity": 62.76765224840256,
+          "perplexity_ci_low": 61.80118575001602,
+          "perplexity_ci_high": 63.74219205326492,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 350011392,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000350011392.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.4097838609013706,
+          "perplexity": 4.095070203628773,
+          "perplexity_ci_low": 4.056417050546508,
+          "perplexity_ci_high": 4.136994209212392,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.118022188777104,
+          "perplexity": 61.43761002665686,
+          "perplexity_ci_low": 60.47586443552839,
+          "perplexity_ci_high": 62.386491150129046,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 400015360,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000400015360.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.401971326355124,
+          "perplexity": 4.063201974107117,
+          "perplexity_ci_low": 4.024631948031577,
+          "perplexity_ci_high": 4.105298001397559,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.098806969006546,
+          "perplexity": 60.2683426888906,
+          "perplexity_ci_low": 59.32488220312239,
+          "perplexity_ci_high": 61.19832186417611,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 450002944,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000450002944.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3930686792300548,
+          "perplexity": 4.027189262819083,
+          "perplexity_ci_low": 3.988272629222959,
+          "perplexity_ci_high": 4.069152277387564,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.0795619243290275,
+          "perplexity": 59.119565332976386,
+          "perplexity_ci_low": 58.176558206664424,
+          "perplexity_ci_high": 60.036413168071164,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 500006912,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000500006912.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.389045401912881,
+          "perplexity": 4.011019313512734,
+          "perplexity_ci_low": 3.973382319831695,
+          "perplexity_ci_high": 4.052666894553083,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.074786012992263,
+          "perplexity": 58.837888697400984,
+          "perplexity_ci_low": 57.880116830992094,
+          "perplexity_ci_high": 59.742752234570965,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 600014848,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000600014848.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.377338294929359,
+          "perplexity": 3.9643356796340687,
+          "perplexity_ci_low": 3.9264574329137476,
+          "perplexity_ci_high": 4.0049837776323445,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.071380403242074,
+          "perplexity": 58.6378506291102,
+          "perplexity_ci_low": 57.700589803466464,
+          "perplexity_ci_high": 59.553643150586204,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 700006400,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000700006400.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.369777607411379,
+          "perplexity": 3.9344755999531613,
+          "perplexity_ci_low": 3.8989332580405645,
+          "perplexity_ci_high": 3.976403453324016,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.056656704749912,
+          "perplexity": 57.78080948681945,
+          "perplexity_ci_low": 56.844817276288175,
+          "perplexity_ci_high": 58.681486680580335,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 800014336,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000800014336.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3642224462819286,
+          "perplexity": 3.9126795503710468,
+          "perplexity_ci_low": 3.876684226124692,
+          "perplexity_ci_high": 3.9530344546522183,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.040801975759678,
+          "perplexity": 56.87193443415708,
+          "perplexity_ci_low": 55.92182841809641,
+          "perplexity_ci_high": 57.766812840599755,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 900005888,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_000900005888.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3598448242992163,
+          "perplexity": 3.895588754175983,
+          "perplexity_ci_low": 3.8595134569081506,
+          "perplexity_ci_high": 3.935223426942642,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.0351601532893255,
+          "perplexity": 56.55197649816276,
+          "perplexity_ci_low": 55.62849856404653,
+          "perplexity_ci_high": 57.44723163674432,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1000013824,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001000013824.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3550556219706777,
+          "perplexity": 3.8769765957145133,
+          "perplexity_ci_low": 3.8407813795159282,
+          "perplexity_ci_high": 3.9172334269365603,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.02766732161399,
+          "perplexity": 56.12982558527015,
+          "perplexity_ci_low": 55.24061491783649,
+          "perplexity_ci_high": 57.007573441590466,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1100005376,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001100005376.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3510868226876482,
+          "perplexity": 3.8616201472689933,
+          "perplexity_ci_low": 3.825713965582569,
+          "perplexity_ci_high": 3.8998886522913745,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.012376770260744,
+          "perplexity": 55.278097892222675,
+          "perplexity_ci_low": 54.38060559924797,
+          "perplexity_ci_high": 56.117436221702555,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1200013312,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001200013312.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3487488632963505,
+          "perplexity": 3.8526023818723423,
+          "perplexity_ci_low": 3.8165467635983235,
+          "perplexity_ci_high": 3.8909296774355044,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.013669366599061,
+          "perplexity": 55.349596358520145,
+          "perplexity_ci_low": 54.43104699475365,
+          "perplexity_ci_high": 56.21036063564702,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1300004864,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001300004864.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3460866690147668,
+          "perplexity": 3.8423596459680085,
+          "perplexity_ci_low": 3.807600234240337,
+          "perplexity_ci_high": 3.880742419184162,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.017190863960423,
+          "perplexity": 55.544853412869024,
+          "perplexity_ci_low": 54.62091060301056,
+          "perplexity_ci_high": 56.40253117406867,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1400012800,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001400012800.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.343730780761689,
+          "perplexity": 3.833318130595758,
+          "perplexity_ci_low": 3.7989929538047953,
+          "perplexity_ci_high": 3.8708128132655717,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 4.003864646423608,
+          "perplexity": 54.80956082926706,
+          "perplexity_ci_low": 53.91362419565595,
+          "perplexity_ci_high": 55.64884761104738,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1500004352,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001500004352.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3390021995874122,
+          "perplexity": 3.815234762679503,
+          "perplexity_ci_low": 3.7797664473606503,
+          "perplexity_ci_high": 3.8519624589344694,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.999547743005678,
+          "perplexity": 54.573463220727284,
+          "perplexity_ci_low": 53.6862491397138,
+          "perplexity_ci_high": 55.40472272447606,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1600012288,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001600012288.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3413089396781288,
+          "perplexity": 3.824045675998624,
+          "perplexity_ci_low": 3.7897659669885106,
+          "perplexity_ci_high": 3.8613753594169626,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.993349112337455,
+          "perplexity": 54.23622875368763,
+          "perplexity_ci_low": 53.359890675538736,
+          "perplexity_ci_high": 55.07125465011768,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1700003840,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001700003840.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3405089699372184,
+          "perplexity": 3.8209877784457977,
+          "perplexity_ci_low": 3.7849925065760393,
+          "perplexity_ci_high": 3.858884763526016,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.9936819947324693,
+          "perplexity": 54.254286044722086,
+          "perplexity_ci_low": 53.371852193245815,
+          "perplexity_ci_high": 55.06464944637046,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1800011776,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001800011776.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.3385219880728982,
+          "perplexity": 3.813403082847963,
+          "perplexity_ci_low": 3.7789327002955964,
+          "perplexity_ci_high": 3.8511246119686096,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.9889095950638875,
+          "perplexity": 53.9959797686371,
+          "perplexity_ci_low": 53.138657907715384,
+          "perplexity_ci_high": 54.82088611247665,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 1900003328,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_001900003328.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.335311229515355,
+          "perplexity": 3.8011788013761647,
+          "perplexity_ci_low": 3.766560285142626,
+          "perplexity_ci_high": 3.8382175918903583,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.9854099655058235,
+          "perplexity": 53.80734411180708,
+          "perplexity_ci_low": 52.92959352246791,
+          "perplexity_ci_high": 54.645569757990216,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    },
+    {
+      "tokens": 2000011264,
+      "checkpoint": "$SMALL_LM_LAB_BULK_ROOT/checkpoints/size30m_staged_seed1/tokens_002000011264.pt",
+      "domains": {
+        "tinystories": {
+          "domain": "tinystories",
+          "split": "val",
+          "mean_nll": 1.334950322721852,
+          "perplexity": 3.799807177652476,
+          "perplexity_ci_low": 3.7655007175268564,
+          "perplexity_ci_high": 3.8376616329284725,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        },
+        "fineweb_edu": {
+          "domain": "fineweb_edu",
+          "split": "val",
+          "mean_nll": 3.9798722717678174,
+          "perplexity": 53.51019902785091,
+          "perplexity_ci_low": 52.63534049125224,
+          "perplexity_ci_high": 54.336624623339226,
+          "n_windows": 2048,
+          "n_tokens": 1048576,
+          "max_windows": 2048,
+          "windows_capped": true
+        }
+      }
+    }
+  ]
+}

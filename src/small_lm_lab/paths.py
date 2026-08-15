@@ -30,6 +30,7 @@ import os
 from pathlib import Path
 
 BULK_ROOT_ENV = "SMALL_LM_LAB_BULK_ROOT"
+REPO_ROOT = Path(__file__).resolve().parents[2]
 
 
 def _default_bulk_root() -> Path:
@@ -62,5 +63,8 @@ def portable_path(path: str | os.PathLike[str] | None) -> str | None:
     try:
         relative = p.resolve().relative_to(BULK_ROOT.resolve())
     except (ValueError, OSError):
-        return str(p)
+        try:
+            return p.resolve().relative_to(REPO_ROOT.resolve()).as_posix()
+        except (ValueError, OSError):
+            return str(p)
     return f"${BULK_ROOT_ENV}/{relative.as_posix()}"

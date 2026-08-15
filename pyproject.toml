@@ -14,7 +14,6 @@ license = { file = "LICENSE" }
 requires-python = ">=3.12"
 dependencies = [
     "datasets>=5.0.0",
-    "kenlm>=0.3.0",
     "matplotlib>=3.11.0",
     "mlx>=0.32.0",
     "numpy>=2.5.1",
@@ -24,6 +23,11 @@ dependencies = [
     "tokenizers>=0.23.1",
     "torch>=2.13.0",
     "tqdm>=4.68.4",
+]
+
+[project.optional-dependencies]
+ngram = [
+    "kenlm>=0.3.0",
 ]
 
 [dependency-groups]

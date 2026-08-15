@@ -1710,7 +1710,6 @@ version = "0.1.0"
 source = { editable = "." }
 dependencies = [
     { name = "datasets" },
-    { name = "kenlm" },
     { name = "matplotlib" },
     { name = "mlx" },
     { name = "numpy" },
@@ -1722,6 +1721,11 @@ dependencies = [
     { name = "tqdm" },
 ]
 
+[package.optional-dependencies]
+ngram = [
+    { name = "kenlm" },
+]
+
 [package.dev-dependencies]
 dev = [
     { name = "pytest" },
@@ -1730,7 +1734,7 @@ dev = [
 [package.metadata]
 requires-dist = [
     { name = "datasets", specifier = ">=5.0.0" },
-    { name = "kenlm", specifier = ">=0.3.0" },
+    { name = "kenlm", marker = "extra == 'ngram'", specifier = ">=0.3.0" },
     { name = "matplotlib", specifier = ">=3.11.0" },
     { name = "mlx", specifier = ">=0.32.0" },
     { name = "numpy", specifier = ">=2.5.1" },
@@ -1741,6 +1745,7 @@ requires-dist = [
     { name = "torch", specifier = ">=2.13.0" },
     { name = "tqdm", specifier = ">=4.68.4" },
 ]
+provides-extras = ["ngram"]
 
 [package.metadata.requires-dev]
 dev = [{ name = "pytest", specifier = ">=9.1.1" }]

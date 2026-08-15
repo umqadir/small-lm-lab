@@ -14,12 +14,12 @@ import math
 from datetime import datetime, timezone
 from pathlib import Path
 
-import kenlm
 import numpy as np
 
 from small_lm_lab.bootstrap import DEFAULT_ALPHA, DEFAULT_N_RESAMPLES, bootstrap_ci
 from small_lm_lab.data import DEFAULT_TOKENIZED_ROOT, iter_eval_split
 from small_lm_lab.evaluate import DOMAINS, EOT_ID, ICL_EARLY, ICL_LATE, _icl_statistic
+from small_lm_lab.paths import portable_path
 
 ORDER = 5
 CONTEXT_LEN = 512
@@ -35,8 +35,12 @@ def parse_model(value: str) -> tuple[str, Path]:
     return domain, Path(path)
 
 
-def score_window(model, tokens: np.ndarray, state_factory=kenlm.State) -> np.ndarray:
+def score_window(model, tokens: np.ndarray, state_factory=None) -> np.ndarray:
     """Natural-log NLL for targets tokens[1:] under a KenLM model."""
+    if state_factory is None:
+        import kenlm
+
+        state_factory = kenlm.State
     state = state_factory()
     model.BeginSentenceWrite(state)
     first = int(tokens[0])
@@ -107,6 +111,8 @@ def evaluate_domain(
 
 
 def main() -> None:
+    import kenlm
+
     parser = argparse.ArgumentParser(description=__doc__.split("\n")[0])
     parser.add_argument("--model", action="append", type=parse_model, required=True)
     parser.add_argument("--split", choices=("val", "test"), default="val")
@@ -126,7 +132,9 @@ def main() -> None:
             "smoothing": "interpolated modified Kneser-Ney (KenLM)",
             "pruning": PRUNING,
             "training": "one model per domain, complete train split",
-            "model_paths": {key: str(value) for key, value in model_paths.items()},
+            "model_paths": {
+                key: portable_path(value) for key, value in model_paths.items()
+            },
             "split": args.split,
             "context_len": CONTEXT_LEN,
             "icl_windows": {"early": list(ICL_EARLY), "late": list(ICL_LATE)},

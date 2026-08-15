@@ -49,7 +49,13 @@ from small_lm_lab.train import (
     warmup_steps_for_tokens,
 )
 
-SIZES = ("size30m", "size60m", "size120m")
+SIZES = (
+    "size30m",
+    "size60m",
+    "size120m",
+    "control_depth1",
+    "control_attn2",
+)
 FRAMEWORKS = ("torch", "mlx")
 
 

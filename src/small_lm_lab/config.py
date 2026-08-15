@@ -33,6 +33,7 @@ class ModelConfig:
     mlp_hidden: int = 0  # 0 means "use default_mlp_hidden(d_model)"
     rmsnorm_eps: float = 1e-5
     tie_embeddings: bool = True
+    attention_only: bool = False
 
     def __post_init__(self) -> None:
         if self.mlp_hidden == 0:
@@ -58,10 +59,12 @@ def n_params(cfg: ModelConfig) -> int:
     embedding = cfg.vocab_size * d
 
     # Per transformer block:
-    #   2 RMSNorm weights: 2 * d
+    #   RMSNorm weights: one before attention, plus one before the MLP when present
     #   attention q,k,v,o projections (no bias): 4 * d * attn
     #   SwiGLU W1(gate), W3(up), W2(down) (no bias): 3 * d * mh
-    per_layer = 2 * d + 4 * d * attn + 3 * d * mh
+    per_layer = d + 4 * d * attn
+    if not cfg.attention_only:
+        per_layer += d + 3 * d * mh
 
     final_norm = d
 
@@ -86,8 +89,8 @@ def load_config(path: str | Path) -> ModelConfig:
     return ModelConfig(**data)
 
 
-# Named configs for the size sweep. All share vocab 16384, context 512,
-# head_dim 64. n_heads * head_dim == d_model in every case.
+# Named configs for the size sweep and the pre-registered depth controls. All
+# share vocab 16384, context 512, head_dim 64, and full-width attention.
 _REGISTRY: dict[str, ModelConfig] = {
     "size30m": ModelConfig(
         vocab_size=16384, d_model=512, n_layers=8, n_heads=8, context_len=512
@@ -97,6 +100,17 @@ _REGISTRY: dict[str, ModelConfig] = {
     ),
     "size120m": ModelConfig(
         vocab_size=16384, d_model=768, n_layers=16, n_heads=12, context_len=512
+    ),
+    "control_depth1": ModelConfig(
+        vocab_size=16384, d_model=512, n_layers=1, n_heads=8, context_len=512
+    ),
+    "control_attn2": ModelConfig(
+        vocab_size=16384,
+        d_model=512,
+        n_layers=2,
+        n_heads=8,
+        context_len=512,
+        attention_only=True,
     ),
 }
 

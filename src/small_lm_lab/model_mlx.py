@@ -104,14 +104,17 @@ class Block(nn.Module):
         super().__init__()
         self.attn_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
         self.attn = Attention(cfg)
-        self.mlp_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
-        self.mlp = SwiGLU(cfg)
+        self.attention_only = cfg.attention_only
+        if not self.attention_only:
+            self.mlp_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
+            self.mlp = SwiGLU(cfg)
 
     def __call__(
         self, x: mx.array, capture: Optional[dict] = None, layer_idx: int = -1
     ) -> mx.array:
         x = x + self.attn(self.attn_norm(x), capture, layer_idx)
-        x = x + self.mlp(self.mlp_norm(x))
+        if not self.attention_only:
+            x = x + self.mlp(self.mlp_norm(x))
         return x
 
 
@@ -145,9 +148,10 @@ class TransformerLM(nn.Module):
             new_params[name] = val
         for i in range(n_layers):
             o = f"blocks.{i}.attn.o_proj.weight"
-            w2 = f"blocks.{i}.mlp.w2.weight"
             new_params[o] = new_params[o] * residual_scale
-            new_params[w2] = new_params[w2] * residual_scale
+            if not self.cfg.attention_only:
+                w2 = f"blocks.{i}.mlp.w2.weight"
+                new_params[w2] = new_params[w2] * residual_scale
         self.load_weights(list(new_params.items()))
 
     def __call__(

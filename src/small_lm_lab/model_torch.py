@@ -187,8 +187,10 @@ class Block(nn.Module):
         super().__init__()
         self.attn_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
         self.attn = Attention(cfg)
-        self.mlp_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
-        self.mlp = SwiGLU(cfg)
+        self.attention_only = cfg.attention_only
+        if not self.attention_only:
+            self.mlp_norm = RMSNorm(cfg.d_model, cfg.rmsnorm_eps)
+            self.mlp = SwiGLU(cfg)
 
     def forward(
         self,
@@ -199,7 +201,8 @@ class Block(nn.Module):
         layer_idx: int = -1,
     ) -> torch.Tensor:
         x = x + self.attn(self.attn_norm(x), cos, sin, capture, layer_idx)
-        x = x + self.mlp(self.mlp_norm(x))
+        if not self.attention_only:
+            x = x + self.mlp(self.mlp_norm(x))
         return x
 
 
@@ -225,7 +228,8 @@ class TransformerLM(nn.Module):
         for block in self.blocks:
             with torch.no_grad():
                 block.attn.o_proj.weight.mul_(scale)
-                block.mlp.w2.weight.mul_(scale)
+                if not block.attention_only:
+                    block.mlp.w2.weight.mul_(scale)
 
     def _init_weights(self, module: nn.Module) -> None:
         if isinstance(module, nn.Linear):

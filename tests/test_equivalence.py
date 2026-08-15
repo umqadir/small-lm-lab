@@ -46,6 +46,15 @@ def test_logit_equivalence_fp32() -> None:
     assert diff < 2e-3, f"logit max abs diff {diff} exceeds 2e-3"
 
 
+def test_attention_only_control_omits_mlp_parameters() -> None:
+    cfg = get_config("control_attn2")
+    assert cfg.attention_only
+    model = model_torch.TransformerLM(cfg)
+    names = dict(model.named_parameters())
+    assert not any(".mlp." in name or ".mlp_norm." in name for name in names)
+    assert _torch_param_count(model) == n_params(cfg)
+
+
 def _make_two_sequences(cfg, change_pos: int, seed: int = 0):
     rng = np.random.default_rng(seed)
     base = rng.integers(0, cfg.vocab_size, size=(1, cfg.context_len), dtype=np.int64)

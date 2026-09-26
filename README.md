@@ -58,72 +58,99 @@ Registered tolerance failed: end difference 0.061059 against 0.02 bound, mean di
 - Contamination check paired with planted-contamination control.
 - Induction-presence statistical test: on random-init models, gap-to-standard-error rose 0.61 (8 sequences) to 5.31 (1024), gate opened on 47.5% of 40 random-init models at the registered 256. Demoted to necessary-not-sufficient. `docs/PROTOCOL.md`, amendment 2026-07-17.
 
-### Stage A headline
+### Stage A result
 
-Stage A finished at 2,000,011,264 tokens with all 34 registered checkpoints.
-At the registered 256-sequence reading, maximum prefix matching moves from
-0.0100 at 24,002,560 tokens to 0.4918 at 48,005,120. The 1,000-resample crossing
-time is 48,005,120 tokens with both percentile bounds at the same grid point.
-Four heads remain above 0.2 at the final checkpoint, in layers 4, 5 and 6.
+![Max prefix-matching score against training tokens](analysis/emergence/final/figures/emergence.png)
 
-The registered from-scratch second seed crosses at 64,012,288 tokens, with its
-1,000-resample interval at that same grid point and two layer-5 induction heads.
-The crossing-location ratio between seeds is 1.33, inside the registered 2x
-replication bound.
+size30m, seed 1, 2,000,011,264 tokens, 34 of 34 registered checkpoints. Prefix-matching at the registered 256 sequences.
 
-Neither registered depth control crosses by 64,012,288 tokens. The one-layer
-model peaks at 0.0064 and the two-layer attention-only model at 0.0132; every
-one of their 1,000 bootstrap trajectories remains uncrossed. This rules out a
-generic training artifact at the measured horizon, but does not separate an
-MLP requirement from a later transition in the minimal attention-only system.
+| Quantity | Value |
+|---|---|
+| Max prefix-matching, 24,002,560 tokens | 0.0100 |
+| Max prefix-matching, 48,005,120 tokens | 0.4918 |
+| Crossing interval (0.1 to 0.3) | 24,002,560 to 48,005,120 tokens |
+| Crossing time, 1,000-resample bootstrap | 48,005,120; both percentile bounds at the same grid point |
+| Heads above 0.2, final checkpoint | 4: L4H4, L4H7, L5H1, L6H0 |
+| Abruptness verdict | INDETERMINATE AT THIS RESOLUTION |
+| Grid intervals spanned (G) | 2 (ABRUPT at 3 or fewer) |
+| Share of FineWeb-Edu val-loss improvement in interval (F) | 0.1357 (ABRUPT at 0.10 or less, GRADUAL at 0.30 or more) |
+| Registered loss bump | none, either domain |
 
-The full 2,048-window causal battery supports the induction interpretation. At
-48,005,120 tokens, joint per-position mean ablation of the five heads above 0.2
-removes 0.00684 copying exact-match accuracy from a 0.00701 baseline and erases
-0.0914 nats of FineWeb-Edu ICL, versus +0.00011 and 0.0030 for matched controls.
-At the final checkpoint, the corresponding copying drops are 0.11665 versus
-0.01779 and the ICL damage is 0.0853 versus 0.0079. Global-mean ablation gives
-the same reading. Single-head activation patches recover 5.7 to 35.3 percent of
-the clean-corrupted gap at 48M and 10.6 to 22.6 percent at 2B; matched controls
-are near zero except for one final layer-6 control at 5.5 percent.
+Validation loss: `analysis/emergence/final/figures/loss.png`.
 
-The primary prediction is an exact grid-point hit: the crossing closes at the
-48M checkpoint, below the registered 200M deadline. Six of eight predictions
-hold. P5 fails because the capped FineWeb-Edu ICL curve falls by 0.0408 nats
-across the crossing, below 0.05, and its steepest step occurs later. P7 fails
-because neither head above 0.3 at the crossing has an OV copying score above
-0.5 there or one grid step earlier. The untrained control stays at chance and
-passes all three P8 clauses.
+### Replication and depth controls
 
-The registered abruptness verdict is **INDETERMINATE AT THIS RESOLUTION**. The
-crossing spans two grid intervals, which meets the abrupt width rule, but it
-contains 13.57 percent of the run's total FineWeb-Edu validation-loss
-improvement, above the 10 percent abrupt cutoff and below the 30 percent gradual
-cutoff. Neither domain shows a registered loss bump.
+| Run | Params | Tokens | Crossing end | Bootstrap crossing | Peak max prefix-matching | Heads above 0.2 at end |
+|---|---:|---:|---:|---|---:|---|
+| size30m, seed 1 | 34,087,424 | 2,000,011,264 | 48,005,120 | 48,005,120 to 48,005,120 | 0.6212 | L4H4, L4H7, L5H1, L6H0 |
+| size30m, seed 2 | 34,087,424 | 64,012,288 | 64,012,288 | 64,012,288 to 64,012,288 | 0.3434 | L5H5, L5H7 |
+| 1 layer | 11,601,408 | 64,012,288 | none | 1,000 of 1,000 resamples uncrossed | 0.0064 | none |
+| 2 layers, attention only | 10,487,296 | 64,012,288 | none | 1,000 of 1,000 resamples uncrossed | 0.0132 | none |
 
-| split | TinyStories perplexity | FineWeb-Edu perplexity | TinyStories ICL | FineWeb-Edu ICL |
+Seed-to-seed crossing ratio 1.33; registered replication bound 2x.
+
+### Causal battery
+
+Joint per-position mean ablation of all heads above 0.2. Copying: 512 sequences. ICL: 2,048 FineWeb-Edu validation windows. 1,000-resample 95% intervals. Controls: equal-count non-induction heads, same layers.
+
+| Checkpoint | Heads ablated | Copying exact-match change, induction heads | Copying exact-match change, controls | FineWeb-Edu ICL damage (nats), induction / controls |
+|---|---:|---|---|---|
+| 48,005,120 | 5 | -0.00684 [-0.00752, -0.00618], baseline 0.00701 | +0.00011 [-0.00017, +0.00034] | 0.0914 / 0.0030 |
+| 64,012,288 | 2 | -0.00215 [-0.00255, -0.00174] | +0.00002 [-0.00006, +0.00009] | 0.0286 / 0.0015 |
+| 2,000,011,264 | 4 | -0.11665 [-0.12179, -0.11183] | -0.01779 [-0.01910, -0.01656] | 0.0853 / 0.0079 |
+
+Global-mean ablation (sensitivity check): intervals non-overlapping between induction and control heads at all three checkpoints; point values in `stage_a_causal_battery.json`.
+
+Activation patching, 256 sequences, recovered fraction of clean-minus-corrupted logit-difference gap:
+
+| Checkpoint | Induction heads | Control heads |
+|---|---|---|
+| 48,005,120 | 5.7% to 35.3% | 0.0% to 0.3% |
+| 64,012,288 | 7.5% to 40.2% | 0.0% to 0.2% |
+| 2,000,011,264 | 10.6% to 22.6% | 0.0% to 5.5% (L6H1) |
+
+Causal checkpoints 16M, 24M and 32M: no head above 0.2, battery not run.
+
+### Registered predictions
+
+6 held, 2 failed, 0 unscored. `analysis/emergence/final/stage_a_prediction_scorecard.json`.
+
+| ID | Prediction | Measured | Verdict |
+|---|---|---|---|
+| P1 (primary) | crossing closes at or below 200M tokens; point 48M | 48,005,120 | held, point hit |
+| P2 | at least one head above 0.2 at final; point 1-4 heads, layers 2-6 | 4 heads, layers 4-6 | held |
+| P3 | at most 3 grid points inside crossing | 1 | held |
+| P4 | previous-token head above 0.3 before crossing | 0.6228 at 24,002,560 | held |
+| P5 | FineWeb-Edu ICL falls at least 0.05 nats across crossing; steepest step within one grid step | 0.0408 nats; steepest step 6 grid points later | failed |
+| P6 | copying clears chance by 200M tokens | 2,015,232 | held |
+| P7 | crossing head OV copying score above 0.5 at or one step before crossing | L4H7 -0.049 at crossing, 0.338 one step before; L5H1 -0.381 | failed |
+| P8 | untrained model stays at chance | max prefix-matching 0.0055; 0 heads above 0.2; copying interval does not clear chance | held |
+
+### Final checkpoint evaluation
+
+| Split | TinyStories perplexity | FineWeb-Edu perplexity | TinyStories ICL | FineWeb-Edu ICL |
 |---|---:|---:|---:|---:|
 | validation | 3.791 | 52.289 | -0.0691 | -0.1705 |
 | test | 3.777 | 53.225 | -0.0780 | -0.1673 |
 
-Mean accuracy across the ten fixed BLiMP paradigms is 0.8021; nine are above
-0.75 and `npi_present_1` is 0.475. Final copying exact-match accuracy is 0.1173
-[0.1124, 0.1224], against chance 0.000061. The pre/mid/post anchor rule cannot
-select anchors because the post-rise curve never has a registered
-three-checkpoint plateau; this failure is recorded rather than repaired after
-seeing the curve.
+| Measure | Value |
+|---|---|
+| BLiMP, mean of 10 registered paradigms | 0.8021 (9 above 0.75; `npi_present_1` 0.475) |
+| Copying exact-match | 0.1173 [0.1124, 0.1224]; chance 0.000061 |
+| Pre/mid/post causal anchors | not selectable: no registered three-checkpoint plateau after the rise |
 
-The registered full-train interpolated 5-gram Kneser-Ney null does not reproduce
-the neural ICL effect. On the same exhaustive validation windows it scores
-+0.01345 [-0.00587, 0.03026] on TinyStories (9,827 windows) and -0.00122
-[-0.01864, 0.01697] on FineWeb-Edu (9,801 windows); both intervals include zero,
-whereas the neural scores are -0.0691 and -0.1705. For storage feasibility the
-KenLM build prunes singleton 3-grams and count-at-most-two 4/5-grams
-(`0 1 1 2 2`). Pruning was not fixed by the protocol, so this implementation
-choice is disclosed; the registered order, smoothing, complete domain-specific
-train splits, held-out windows and late-minus-early statistic are unchanged.
+### 5-gram ICL null
 
-Primary artifacts: `analysis/emergence/final/` and `analysis/evaluation/`.
+Interpolated modified Kneser-Ney, order 5, KenLM, full train split per domain, same validation windows and late-minus-early statistic.
+
+| Domain | Windows | 5-gram ICL [95%] | Neural ICL |
+|---|---:|---|---:|
+| TinyStories | 9,827 | +0.01345 [-0.00587, +0.03026] | -0.0691 |
+| FineWeb-Edu | 9,801 | -0.00122 [-0.01864, +0.01697] | -0.1705 |
+
+KenLM pruning `0 1 1 2 2` (not fixed by the protocol).
+
+Artifacts: `analysis/emergence/final/`, `analysis/evaluation/`.
 
 ## Throughput and cost
 
@@ -185,12 +212,26 @@ uv run python scripts/07_train.py \
   --run-name size30m_staged_seed1
 ```
 
+Replication and controls: same command with `--tokens 6.4e7 --checkpoint-schedule configs/control_checkpoints.json` and
+
+| Run | Flags |
+|---|---|
+| size30m, seed 2 | `--seed 2 --run-name size30m_replication_seed2` |
+| 1 layer | `--size control_depth1 --run-name control_depth1_seed1` |
+| 2 layers, attention only | `--size control_attn2 --run-name control_attn2_seed1` |
+
+Analysis: scripts 19 to 27 in order, against the checkpoint directories above.
+
 ## Status
 
-Stage A and its registered replication, depth-control, causal, evaluation and
-null-model follow-ups are complete. The primary run crossed the induction
-threshold by 48,005,120 tokens, so the registered no-crossing condition for
-Stage B was not met and Stage B was not activated.
+| Item | State |
+|---|---|
+| Stage A, size30m to 2B tokens, 34 checkpoints | done |
+| Second seed, 1-layer and 2-layer attention-only controls, to 64M tokens | done |
+| Causal battery, final evaluation, prediction scorecard, 5-gram null | done |
+| Stage B (continue past 2B in 500M segments, 5B cap) | not run; registered stop rule (plateau of 3 checkpoints within 3 sigma = 0.0065 of running max, plus 20% margin) not met through 2B; run stopped at 2B |
+| size60m, size120m | not run; optional after 2026-07-21 rescope |
+| Checkpoints and tokenized corpus | not published |
 
 ## License
 
